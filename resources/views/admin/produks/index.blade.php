@@ -5,7 +5,7 @@
 
     <div class="pc-container">
         <div class="pc-content">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200">
+            <div class="flex flex-col md:flex-row md:items-center -mt-6 md:justify-between gap-4 p-4 bg-white rounded-xl shadow-sm border border-gray-200">
                 <!-- Search and Filters -->
                 <div class="flex flex-col sm:flex-row gap-3 flex-wrap">
                     <!-- Search Input -->
@@ -50,30 +50,30 @@
                 <!-- Action Buttons -->
                 <div class="flex gap-2 flex-wrap">
                     <!-- Tambah Produk -->
-                    <a 
+                    <a
                         id="btnTambahProduk"
-                        class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
+                        class="bg-teal-600 hover:bg-teal-700 text-white px-2 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
                         <i class="fas fa-plus-circle"></i>
                         <span>Tambah</span>
                     </a>
 
                     <!-- Import -->
                     <a href="{{ route('admin.produks.create') }}"
-                        class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
+                        class="bg-purple-600 hover:bg-purple-700 text-white px-2 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
                         <i class="fas fa-file-import"></i>
                         <span>Import</span>
                     </a>
 
                     <!-- Kategori -->
                     <a href="{{ route('admin.kategoris.index') }}"
-                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
                         <i class="fas fa-tags"></i>
                         <span>Kategori</span>
                     </a>
 
                     <!-- Supplier -->
                     <a href="{{ route('admin.suppliers.index') }}"
-                        class="bg-pink-600 hover:bg-pink-700 text-white px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
+                        class="bg-pink-600 hover:bg-pink-700 text-white px-2 py-2.5 rounded-lg transition-colors flex items-center gap-2 text-sm font-medium shadow-sm hover:shadow-md">
                         <i class="fas fa-truck-loading"></i>
                         <span>Supplier</span>
                     </a>
@@ -145,109 +145,129 @@
     </div>
 
     <!-- Modal Create/Edit Produk -->
-    <div id="produkModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-2xl shadow-xl w-[900px] max-h-[90vh] overflow-y-auto p-6">
-            <!-- Header -->
-            <div class="flex justify-between items-center border-b pb-3 mb-4">
-                <h3 id="produkModalTitle" class="text-xl font-semibold text-gray-800">Tambah Produk</h3>
-                <button onclick="closeProdukModal()" class="text-gray-500 hover:text-gray-800">
-                    ✕
-                </button>
+    <div id="produkModal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-xl w-full max-w-[900px] max-h-[90vh] overflow-hidden border border-teal-100 mt-16 ">
+            <!-- Header dengan Teal -->
+            <div class="bg-teal-600 px-4 py-2">
+                <div class="flex justify-between items-center">
+                    <h3 id="produkModalTitle" class="text-lg font-semibold text-white">Tambah Produk</h3>
+                    <button onclick="closeProdukModal()" class="text-white hover:text-teal-200 transition-colors">
+                        ✕
+                    </button>
+                </div>
             </div>
 
-            <!-- Form -->
-            <form id="produkForm" class="grid grid-cols-2 gap-6" enctype="multipart/form-data">
-                @csrf
-                <input type="hidden" id="produkIdField" name="id">
-                <input type="hidden" name="_method" id="methodField" value="POST">
+            <!-- Form Content -->
+            <div class="p-6 bg-gray-50">
+                <form id="produkForm" class="grid grid-cols-1 lg:grid-cols-2 gap-4" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" id="produkIdField" name="id">
+                    <input type="hidden" name="_method" id="methodField" value="POST">
 
-                <!-- Kolom Kiri -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Kode Produk</label>
-                        <input type="text" id="kode_produk" name="kode_produk"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required maxlength="100">
-                        <small class="text-red-500 hidden" id="kode-error">Kode produk sudah digunakan</small>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Nama Produk</label>
-                        <input type="text" id="nama" name="nama"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required maxlength="255">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Kategori</label>
-                        <select id="kategori_id" name="kategori_id"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required>
-                            <option value="">-- Pilih Kategori --</option>
-                            @foreach($kategoris as $kategori)
-                            <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Harga Beli</label>
-                            <input type="number" id="harga_beli" name="harga_beli"
-                                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required min="0" step="1">
+                    <!-- Kolom Kiri -->
+                    <div class="space-y-3">
+                        <!-- Kode Produk -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Kode Produk</label>
+                            <input type="text" id="kode_produk" name="kode_produk"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                required maxlength="100">
+                            <small class="text-red-500 hidden mt-1 text-sm" id="kode-error">Kode produk sudah digunakan</small>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Harga Jual</label>
-                            <input type="number" id="harga_jual" name="harga_jual"
-                                class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required min="0" step="1">
+
+                        <!-- Nama Produk -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Nama Produk</label>
+                            <input type="text" id="nama" name="nama"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                required maxlength="255">
+                        </div>
+
+                        <!-- Kategori -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Kategori</label>
+                            <select id="kategori_id" name="kategori_id"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                required>
+                                <option value="">-- Pilih Kategori --</option>
+                                @foreach($kategoris as $kategori)
+                                <option value="{{ $kategori->id }}">{{ $kategori->nama }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Harga Beli & Jual -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Beli</label>
+                                <input type="number" id="harga_beli" name="harga_beli"
+                                    class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                    required min="0" step="1">
+                            </div>
+                            <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Jual</label>
+                                <input type="number" id="harga_jual" name="harga_jual"
+                                    class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                    required min="0" step="1">
+                            </div>
+                        </div>
+
+                        <!-- Stok -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Stok</label>
+                            <input type="number" id="stok" name="stok"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                required min="0">
                         </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Stok</label>
-                        <input type="number" id="stok" name="stok"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required min="0">
-                    </div>
-                </div>
+                    <!-- Kolom Kanan -->
+                    <div class="space-y-1">
+                        <!-- Supplier -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Supplier</label>
+                            <select id="suppliers" name="suppliers[]" multiple
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors h-28"
+                                required>
+                                @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}">{{ $supplier->nama }}</option>
+                                @endforeach
+                            </select>
+                            <small class="text-teal-600 text-xs mt-1">Pilih satu atau lebih supplier</small>
+                        </div>
 
-                <!-- Kolom Kanan -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Supplier</label>
-                        <select id="suppliers" name="suppliers[]" multiple
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" required>
-                            @foreach($suppliers as $supplier)
-                            <option value="{{ $supplier->id }}">{{ $supplier->nama }}</option>
-                            @endforeach
-                        </select>
-                        <small class="text-gray-500">Pilih satu atau lebih supplier</small>
+                        <!-- Deskripsi -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Deskripsi</label>
+                            <textarea id="deskripsi" name="deskripsi"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                rows="3"></textarea>
+                        </div>
+
+                        <!-- Foto Produk -->
+                        <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Foto Produk</label>
+                            <input type="file" id="foto" name="foto"
+                                class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                                accept="image/jpeg,image/jpg,image/png">
+                            <small class="text-teal-600 text-xs">Format: JPG, JPEG, PNG (Max: 2MB)</small>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                        <textarea id="deskripsi" name="deskripsi"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200" rows="4"></textarea>
+                    <!-- Footer -->
+                    <div class="col-span-2 flex justify-end gap-3 pt-4 -mt-10  border-teal-200">
+                        <button type="button" id="btnCancelProduk"
+                            class="px-4 py-2 border border-teal-300 text-teal-700 rounded-lg hover:bg-teal-50 transition-colors">
+                            Batal
+                        </button>
+                        <button type="submit"
+                            class="px-4 py-2 bg-teal-600 text-white rounded-lg shadow hover:bg-teal-700 transition-colors"
+                            id="submitBtn">
+                            Simpan
+                        </button>
                     </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700">Foto Produk</label>
-                        <input type="file" id="foto" name="foto"
-                            class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-indigo-200"
-                            accept="image/jpeg,image/jpg,image/png">
-                        <small class="text-gray-500">Format: JPG, JPEG, PNG (Max: 2MB)</small>
-                    </div>
-                </div>
-
-                <!-- Footer -->
-                <div class="col-span-2 flex justify-end gap-3 pt-4 border-t">
-                    <button type="button" id="btnCancelProduk"
-                        class="px-4 py-2 border rounded-lg text-gray-600 hover:bg-gray-100">
-                        Batal
-                    </button>
-                    <button type="submit"
-                        class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700"
-                        id="submitBtn">
-                        Simpan
-                    </button>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 

@@ -211,7 +211,7 @@ class TransaksiController extends Controller
             'id'        => $transaksi->id,
             'invoice'   => $transaksi->invoice,
             'tanggal'   => $transaksi->created_at->format('Y-m-d H:i:s'),
-            'kasir'     => $transaksi->user?->name ?? '-',
+            'kasir'     => $transaksi->user?->nama ?? '-',
             'pelanggan' => $transaksi->pelanggan?->nama ?? 'Umum',
             'total'     => $transaksi->total,
             'diskon'    => $transaksi->diskon,
@@ -232,42 +232,61 @@ class TransaksiController extends Controller
         ]);
     }
 
-    public function rekapHarian(Request $request)
+    public function rekapHarian()
     {
-        $tanggal = $request->get('tanggal', Carbon::today()->toDateString());
+        $tanggal = Carbon::today();
 
-        $query = Transaksi::whereDate('created_at', $tanggal);
+        // transaksi hari ini
+        $transaksis = Transaksi::with('details.produk')
+            ->whereDate('created_at', $tanggal)
+            ->get();
 
-        // total transaksi (jumlah record)
-        $jumlahTransaksi = $query->count();
+        $jumlahTransaksi = $transaksis->count();
+        $omzet = $transaksis->sum('total');
+        $totalBayar = $transaksis->sum('bayar');
+        $totalKembali = $transaksis->sum('kembali');
 
-        // total omzet = SUM total - diskon
-        $omzet = $query->sum(DB::raw('total - COALESCE(diskon,0)'));
+        // total item terjual
+        $totalItem = $transaksis->flatMap->details->sum('jumlah');
 
-        // total bayar (uang diterima kasir)
-        $totalBayar = $query->sum('bayar');
+        // produk terlaris (top 5)
+        $produkTerlaris = DetailTransaksi::with('produk')
+            ->whereHas('transaksi', fn($q) => $q->whereDate('created_at', $tanggal))
+            ->select('produk_id', DB::raw('SUM(jumlah) as total_qty'))
+            ->groupBy('produk_id')
+            ->orderByDesc('total_qty')
+            ->take(5)
+            ->get()
+            ->map(fn($d) => [
+                'produk' => $d->produk->nama ?? 'Unknown',
+                'qty'    => $d->total_qty,
+            ]);
 
-        // total kembalian
-        $totalKembali = $query->sum('kembali');
+        // 5 waktu transaksi terakhir
+        $waktuTransaksi = $transaksis
+            ->sortByDesc('created_at')
+            ->take(5)
+            ->pluck('created_at')
+            ->map(fn($t) => $t->format('H:i:s'));
 
-        // breakdown metode pembayaran
-        $metode = $query->select('metode_pembayaran', DB::raw('COUNT(*) as jumlah'))
-            ->groupBy('metode_pembayaran')
-            ->pluck('jumlah', 'metode_pembayaran');
+        // metode pembayaran
+        $metode = $transaksis->groupBy('metode_pembayaran')->map->count();
 
         return response()->json([
-            'tanggal'          => $tanggal,
             'jumlah_transaksi' => $jumlahTransaksi,
             'omzet'            => $omzet,
             'total_bayar'      => $totalBayar,
             'total_kembali'    => $totalKembali,
-            'metode'           => $metode, // contoh: { "cash": 8, "qris": 3 }
+            'total_item'       => $totalItem,
+            'produk_terlaris'  => $produkTerlaris,
+            'waktu_terakhir'   => $waktuTransaksi,
+            'metode'           => $metode,
         ]);
     }
+
 
     public function laporanHarian()
     {
         return view('kasir.laporan.laporan-harian');
     }
-
 }

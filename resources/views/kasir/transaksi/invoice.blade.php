@@ -44,6 +44,7 @@
     <hr>
     <p class="text-right">Total: <strong>{{ number_format($transaksi->total,0,',','.') }}</strong></p>
     <p class="text-right">Diskon: {{ number_format($transaksi->diskon ?? 0,0,',','.') }}</p>
+    <p class="text-right">Total Pembayaran: {{ number_format($transaksi->total - $transaksi->diskon ?? 0,0,',','.') }}</p>
     <p class="text-right">Bayar: {{ number_format($transaksi->bayar,0,',','.') }}</p>
     <p class="text-right">Kembali: {{ number_format($transaksi->kembali,0,',','.') }}</p>
 

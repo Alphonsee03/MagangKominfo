@@ -8,11 +8,16 @@ use App\Http\Controllers\Admin\ProdukController as AdminProdukController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\SupplierController;
+use App\Http\Controllers\Admin\TransaksiController as AdminTransaksiController;
+use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\Admin\LaporanPembelianController;
+use App\Http\Controllers\Admin\LaporanProfitController;
 
 use App\Http\Controllers\Kasir\POSController;
 use App\Http\Controllers\Kasir\DashboardController as KasirDashboardController;
 use App\Http\Controllers\Kasir\TransaksiController;
 use App\Http\Controllers\Kasir\CartController;
+use App\Http\Controllers\Kasir\StokController;
 
 
 Route::get('/', function () {
@@ -33,6 +38,25 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::resource('/kategoris', KategoriController::class);
     Route::resource('/suppliers', SupplierController::class);
 
+    Route::get('/transaksi', [AdminTransaksiController::class, 'index'])->name('transaksi.index');
+    Route::get('/transaksi/data', [AdminTransaksiController::class, 'data'])->name('transaksi.data');
+    Route::get('/transaksi/{id}/detail', [AdminTransaksiController::class, 'detail'])->name('transaksi.detail');
+    Route::get('/transaksi/export/pdf', [AdminTransaksiController::class, 'exportPdf'])->name('transaksi.export.pdf');
+    Route::get('/transaksi/export/excel', [AdminTransaksiController::class, 'exportExcel'])->name('transaksi.export.excel');
+    Route::get('/transaksi/{id}/export-pdf', [AdminTransaksiController::class, 'exportDetailPdf'])
+    ->name('transaksi.export.detail.pdf');
+
+    Route::get('/laporan/stok-gudang', [LaporanController::class, 'stokGudang'])->name('laporan.stok-gudang');
+    Route::get('/laporan/stok-gudang/data', [LaporanController::class, 'stokGudangData']);
+    Route::get('/laporan/stok-gudang/export-pdf', [LaporanController::class, 'stokGudangExportPdf']);
+
+    Route::get('/laporan/pembelian', [LaporanPembelianController::class, 'index'])->name('pembelian.index');
+    Route::get('/laporan/pembelian/data', [LaporanPembelianController::class, 'data'])->name('pembelian.data');
+    Route::get('/laporan/pembelian/export-pdf', [LaporanPembelianController::class, 'exportPdf'])->name('pembelian.export.pdf');
+
+    Route::get('/laporan/profit', [LaporanProfitController::class, 'index'])->name('profit.index');
+    Route::get('/laporan/profit/data', [LaporanProfitController::class, 'data'])->name('profit.data');
+    Route::get('/laporan/profit/export-pdf', [LaporanProfitController::class, 'exportPdf'])->name('profit.export.pdf');
 
 });
 
@@ -60,6 +84,10 @@ Route::middleware('auth:kasir')->prefix('kasir')->name('kasir.')->group(function
 
     Route::get('/history', [TransaksiController::class, 'history'])->name('transaksi.history');
     Route::get('/laporan/harian', [TransaksiController::class, 'laporanHarian'])->name('laporan.harian');
+
+    Route::get('/stok', [StokController::class, 'index'])->name('stok.index');
+    Route::get('/stok/data', [StokController::class, 'data'])->name('stok.data');
+
 });
 
 

@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Produk;
 use App\Models\Kategori;
 use App\Models\Supplier;
+use App\Models\StokLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProdukController extends Controller
 {
@@ -65,29 +68,47 @@ class ProdukController extends Controller
         Log::info('Store Request:', $request->all());
 
         $request->validate([
-            'suppliers' => 'required|array',
-            'suppliers.*' => 'exists:suppliers,id',
-            'kode_produk' => 'required|string|max:100|unique:produks',
-            'nama' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategoris,id',
-            'harga_beli' => 'required|numeric|min:0',
-            'harga_jual' => 'required|numeric|min:0',
-            'stok' => 'required|integer|min:0',
-            'deskripsi' => 'nullable|string',
-            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'suppliers'    => 'required|array',
+            'suppliers.*'  => 'exists:suppliers,id',
+            'kode_produk'  => 'required|string|max:100|unique:produks',
+            'nama'         => 'required|string|max:255',
+            'kategori_id'  => 'required|exists:kategoris,id',
+            'harga_beli'   => 'required|numeric|min:0',
+            'harga_jual'   => 'required|numeric|min:0',
+            'stok'         => 'required|integer|min:0',
+            'deskripsi'    => 'nullable|string',
+            'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->except('suppliers');
+        DB::beginTransaction();
+        try {
+            $data = $request->except('suppliers');
 
-        if ($request->hasFile('foto')) {
-            $data['foto'] = $request->file('foto')->store('produk', 'public');
+            if ($request->hasFile('foto')) {
+                $data['foto'] = $request->file('foto')->store('produk', 'public');
+            }
+
+            $produk = Produk::create($data);
+
+            // Simpan relasi supplier
+            $produk->suppliers()->attach($request->suppliers);
+
+            // Catat stok awal ke stok_logs
+            if ($produk->stok > 0) {
+                StokLog::create([
+                    'produk_id'  => $produk->id,
+                    'tipe'       => 'masuk',
+                    'jumlah'     => $produk->stok,
+                    'keterangan' => 'Input Produk',
+                    'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal simpan produk: ' . $e->getMessage()]);
         }
-
-        $produk = Produk::create($data);
-
-        // Attach suppliers
-        $produk->suppliers()->attach($request->suppliers);
-
         // Jika request via AJAX
         if ($request->ajax()) {
             $produk->load(['kategori', 'suppliers']);
@@ -99,7 +120,6 @@ class ProdukController extends Controller
             ]);
         }
 
-        // Jika request normal
         return redirect()
             ->route('admin.produks.index')
             ->with('success', 'Produk berhasil ditambahkan.');
@@ -123,33 +143,53 @@ class ProdukController extends Controller
         Log::info('Update Request:', $request->all());
 
         $request->validate([
-            'suppliers' => 'required|array',
-            'suppliers.*' => 'exists:suppliers,id',
-            'kategori_id' => 'required|exists:kategoris,id',
-            'kode_produk' => 'required|string|max:100|unique:produks,kode_produk,' . $produk->id,
-            'nama'        => 'required|string|max:255',
-            'harga_beli'  => 'required|numeric|min:0',
-            'harga_jual'  => 'required|numeric|min:0',
-            'stok'        => 'required|integer|min:0',
-            'deskripsi'   => 'nullable|string',
-            'foto'        => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'suppliers'    => 'required|array',
+            'suppliers.*'  => 'exists:suppliers,id',
+            'kategori_id'  => 'required|exists:kategoris,id',
+            'kode_produk'  => 'required|string|max:100|unique:produks,kode_produk,' . $produk->id,
+            'nama'         => 'required|string|max:255',
+            'harga_beli'   => 'required|numeric|min:0',
+            'harga_jual'   => 'required|numeric|min:0',
+            'stok'         => 'required|integer|min:0',
+            'deskripsi'    => 'nullable|string',
+            'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $data = $request->except('suppliers');
+        DB::beginTransaction();
+        try {
+            $data = $request->except('suppliers');
 
-        if ($request->hasFile('foto')) {
-            if ($produk->foto) {
-                Storage::disk('public')->delete($produk->foto);
+            if ($request->hasFile('foto')) {
+                if ($produk->foto) {
+                    Storage::disk('public')->delete($produk->foto);
+                }
+                $data['foto'] = $request->file('foto')->store('produk', 'public');
             }
-            $data['foto'] = $request->file('foto')->store('produk', 'public');
+
+            $stokLama = $produk->stok;
+
+            $produk->update($data);
+
+            // Update relasi supplier
+            $produk->suppliers()->sync($request->suppliers);
+
+            // Catat perubahan stok jika ada perbedaan
+            $delta = $produk->stok - $stokLama;
+            if ($delta !== 0) {
+                StokLog::create([
+                    'produk_id'  => $produk->id,
+                    'tipe'       => $delta > 0 ? 'masuk' : 'keluar',
+                    'jumlah'     => abs($delta),
+                    'keterangan' => 'Penyesuaian stok (edit produk)',
+                    'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
+                ]);
+            }
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal update produk: ' . $e->getMessage()]);
         }
-
-        $produk->update($data);
-
-        // Sync suppliers
-        $produk->suppliers()->sync($request->suppliers);
-
-
         $produk->load(['kategori', 'suppliers']);
         return response()->json([
             'success' => true,
@@ -158,8 +198,10 @@ class ProdukController extends Controller
                 'id' => $produk->id,
                 'kode_produk' => $produk->kode_produk,
                 'nama' => $produk->nama,
-                'kategori_id' => $produk->kategori_id,
-                'kategori_nama' => $produk->kategori->nama ?? null,
+                'kategori' => [
+                    'id' => $produk->kategori->id ?? null,
+                    'nama' => $produk->kategori->nama ?? null,
+                ],
                 'harga_beli' => $produk->harga_beli,
                 'harga_jual' => $produk->harga_jual,
                 'stok' => $produk->stok,
@@ -169,15 +211,40 @@ class ProdukController extends Controller
         ]);
     }
 
+
     /**
      * Hapus produk
      */
     public function destroy(Produk $produk)
     {
-        if ($produk->foto) {
-            Storage::disk('public')->delete($produk->foto);
+        DB::beginTransaction();
+        try {
+            // Catat keluar semua stok jika masih ada
+            if ($produk->stok > 0) {
+                StokLog::create([
+                    'produk_id'  => $produk->id,
+                    'tipe'       => 'keluar',
+                    'jumlah'     => $produk->stok,
+                    'keterangan' => 'Write-off stok karena hapus produk',
+                    'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
+                ]);
+            }
+
+            if ($produk->foto) {
+                Storage::disk('public')->delete($produk->foto);
+            }
+
+            // Hapus relasi supplier
+            $produk->suppliers()->detach();
+
+            // Hapus produk
+            $produk->delete();
+
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => 'Gagal hapus produk: ' . $e->getMessage()]);
         }
-        $produk->delete();
 
         if (request()->ajax()) {
             return response()->json([

@@ -159,8 +159,7 @@ function closeProdukModal() {
 }
 
 // close modal
-document
-    .getElementById("btnCancelProduk")
+document.getElementById("btnCancelProduk")
     ?.addEventListener("click", closeProdukModal);
 
 // submit produk
@@ -210,6 +209,7 @@ produkForm.addEventListener("submit", (e) => {
         });
 });
 
+
 /* =======================
    UPDATE TABLE DOM
 ======================= */
@@ -245,7 +245,7 @@ function buildRow(produk) {
         <td class="px-4 py-2 font-medium text-gray-600"></td>
         <td class="px-4 py-2 font-bold text-center">${produk.kode_produk}</td>
         <td class="px-4 py-2 font-semibold text-gray-800 text-center">${produk.nama}</td>
-        <td class="px-4 py-2">${produk.kategori_nama ?? "-"}</td>
+        <td class="px-4 py-2">${produk.kategori.nama ?? "-"}</td>
         <td class="px-4 py-2 text-gray-700">Rp ${formatRupiah(
             produk.harga_beli
         )}</td>

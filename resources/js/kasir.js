@@ -164,4 +164,101 @@ document.addEventListener("DOMContentLoaded", () => {
             },
         }).then(() => loadCart());
     };
+
+    const posContainer = document.getElementById("pos-container");
+
+    if (posContainer) {
+        const modalBayar = document.getElementById("modal-bayar");
+        const isModalOpen = () =>
+            modalBayar && !modalBayar.classList.contains("hidden");
+
+        document.addEventListener("keydown", function (e) {
+            const active = document.activeElement;
+
+            // SHIFT+I → fokus ke input kode
+            if (e.key.toLowerCase() === "i" && e.shiftKey) {
+                e.preventDefault();
+                const kode = document.getElementById("kode_produk");
+                if (kode) kode.focus();
+                return;
+            }
+
+            // ESC → reset
+            if (e.key === "Escape") {
+                e.preventDefault();
+                const btnReset = document.getElementById("btn-reset");
+                if (btnReset) btnReset.click();
+                return;
+            }
+
+            // ====== ENTER routing ======
+            if (e.key === "Enter") {
+                // 1) Di modal: diskon → pindah ke bayar
+                if (active?.name === "diskon") {
+                    e.preventDefault();
+                    e.stopPropagation(); // cegah handler global
+                    const bayar = document.querySelector(
+                        '#modal-bayar input[name="bayar"]'
+                    );
+                    if (bayar) bayar.focus();
+                    return;
+                }
+
+                // 2) Di modal: bayar → klik submit
+                if (active?.name === "bayar") {
+                    e.preventDefault();
+                    e.stopPropagation(); // cegah handler global
+                    const submitBtn =
+                        document.querySelector(
+                            '#modal-bayar button[type="submit"]'
+                        ) ||
+                        document.querySelector(
+                            "#modal-bayar .btn-submit-bayar"
+                        );
+                    if (submitBtn) submitBtn.click();
+                    return;
+                }
+
+                // 3) Di form produk: kode → pindah qty
+                if (active?.id === "kode_produk") {
+                    e.preventDefault();
+                    const qty = document.getElementById("qty");
+                    if (qty) qty.focus();
+                    return;
+                }
+
+                // 4) Di form produk: qty → klik tambah + balik ke kode (loop)
+                if (active?.id === "qty") {
+                    e.preventDefault();
+                    const btnAdd = document.getElementById("btn-add");
+                    if (btnAdd) {
+                        btnAdd.click();
+                        const kode = document.getElementById("kode_produk");
+                        if (kode) kode.focus();
+                    }
+                    return;
+                }
+
+                // 5) Di luar input produk & modal TERTUTUP → buka modal & fokus diskon
+                if (
+                    !isModalOpen() &&
+                    active?.id !== "kode_produk" &&
+                    active?.id !== "qty"
+                ) {
+                    e.preventDefault();
+                    const btnBayar = document.getElementById("btn-bayar");
+                    if (btnBayar) {
+                        btnBayar.click();
+                        // beri waktu modal render sebelum fokus
+                        setTimeout(() => {
+                            const diskon = document.querySelector(
+                                '#modal-bayar input[name="diskon"]'
+                            );
+                            if (diskon) diskon.focus();
+                        }, 120);
+                    }
+                }
+            }
+        });
+    }
 });

@@ -1,7 +1,7 @@
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <!-- Logo Header -->
-        <div class="m-header flex items-center py-4 px-6 h-header-height border-b border-teal-700/30">
+        <div class="m-header flex items-center py-4 px-6 bg-teal-800/70 h-header-height border-b-2 border-slate-800 ">
             <a href="#" class="b-brand flex items-center gap-3">
                 <!-- Logo -->
                 <div class="flex justify-center items-center w-full py-2" style="transform: scale(1.5); transform-origin: left;">
@@ -40,7 +40,7 @@
 
         <!-- Navigation Content -->
         <div class="navbar-content h-[calc(100vh_-_74px)] py-4 overflow-y-auto">
-            <ul class="pc-navbar space-y-1 px-3">
+            <ul class="pc-navbar space-y-3 px-3">
                 <!-- Dashboard -->
                 <li class="pc-item">
                     <a href="{{ route('kasir.dashboard.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
@@ -87,7 +87,7 @@
 
                 <!-- Stok Gudang -->
                 <li class="pc-item">
-                    <a href="#" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
+                    <a href="{{ route('kasir.stok.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-boxes text-lg"></i>
                         </span>
@@ -96,20 +96,6 @@
                     </a>
                 </li>
 
-                <!-- Logout -->
-                <li class="pc-item mt-8">
-                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                        class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-rose-600/30 transition-all duration-200">
-                        <span class="pc-micon mr-3">
-                            <i class="fas fa-sign-out-alt text-lg"></i>
-                        </span>
-                        <span class="pc-mtext font-medium">Logout</span>
-                        <div class="absolute inset-0 bg-rose-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
-                    </a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                        @csrf
-                    </form>
-                </li>
             </ul>
         </div>
     </div>

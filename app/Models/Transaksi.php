@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaksi extends Model
 {
+    public $timestamps = true;
     protected $fillable = [
         'invoice',
         'user_id',

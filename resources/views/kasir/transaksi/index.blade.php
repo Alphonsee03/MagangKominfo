@@ -110,7 +110,7 @@
                     <p class="text-indigo-100">Sistem Point of Sale Modern</p>
                 </div>
 
-                <div class="p-6">
+                <div id="pos-container" class="p-6 space-y-4">
                     <!-- Input Produk -->
                     <div class="bg-white rounded-xl p-5 shadow-md mb-6">
                         <h2 class="text-lg font-semibold mb-4 text-slate-700 flex items-center">
@@ -118,13 +118,14 @@
                         </h2>
                         <div class="flex gap-4">
                             <div class="flex-1 relative">
-                                <i class="fas fa-barcode absolute left-3 top-3.5 text-slate-400"></i>
+                                <i class="fas fa-barcode absolute left-3 top-3.5 text-slate-400"></i> Jumlah
                                 <input
                                     id="kode_produk"
                                     type="text"
                                     placeholder="Scan / ketik kode produk..."
                                     class="w-full border rounded-lg pl-10 pr-4 py-2.5 input-focus focus:outline-none focus:border-indigo-500"
                                     autofocus>
+                                    
                             </div>
                             <div class="relative">
                                 <i class="fas fa-sort-numeric-up absolute left-3 top-3.5 text-slate-400"></i>

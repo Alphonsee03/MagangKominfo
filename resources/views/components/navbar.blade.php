@@ -1,7 +1,7 @@
 <nav class="pc-sidebar">
     <div class="navbar-wrapper">
         <!-- Logo Header -->
-        <div class="m-header flex items-center py-4 px-6 h-header-height border-b border-teal-700/30">
+        <div class="bg-slate-700 rounded-sm  flex items-center py-4 px-6 h-header-height border-b border-teal-700/30">
             <a href="#" class="b-brand flex items-center gap-3">
                 <!-- Logo -->
                 <div class="flex justify-center items-center w-full py-2" style="transform: scale(1.5); transform-origin: left;">
@@ -98,7 +98,7 @@
 
                 <!-- Transaksi -->
                 <li class="pc-item">
-                    <a href="../pages/register-v1.html" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200" target="_blank">
+                    <a href="{{ route('admin.transaksi.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-shopping-cart text-lg"></i>
                         </span>
@@ -132,61 +132,31 @@
                     </a>
                     <ul class="pc-submenu ml-4 mt-1 space-y-1 border-l border-white/10 pl-3">
                         <li class="pc-item">
-                            <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200" href="#!">
+                            <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200" href="{{ route('admin.laporan.stok-gudang') }}">
                                 <i class="fas fa-box text-sm mr-2"></i>
                                 Stok Gudang
                                 <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                             </a>
                         </li>
-
                         <!-- Pembelian Submenu -->
-                        <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link group relative flex items-center justify-between px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200">
-                                <div class="flex items-center">
-                                    <i class="fas fa-shopping-bag text-sm mr-2"></i>
-                                    Pembelian
-                                </div>
-                                <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                            </a>
-                            <ul class="pc-submenu ml-3 mt-1 space-y-1 border-l border-white/10 pl-3">
-                                <li class="pc-item">
-                                    <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/60 hover:text-white transition-all duration-200" href="#!">
-                                        Laporan Bulanan
-                                    </a>
-                                </li>
-                                <li class="pc-item">
-                                    <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/60 hover:text-white transition-all duration-200" href="#!">
-                                        Laporan Supplier
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
+                        <a href="{{ route('admin.pembelian.index') }}" class="pc-link group relative flex items-center justify-between px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-shopping-bag text-sm mr-2"></i>
+                                Pembelian
+                            </div>
+                            <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                        </a>
                         <!-- Profit Submenu -->
-                        <li class="pc-item pc-hasmenu">
-                            <a href="#!" class="pc-link group relative flex items-center justify-between px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200">
-                                <div class="flex items-center">
-                                    <i class="fas fa-money-bill-wave text-sm mr-2"></i>
-                                    Profit
-                                </div>
-                                <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-                            </a>
-                            <ul class="pc-submenu ml-3 mt-1 space-y-1 border-l border-white/10 pl-3">
-                                <li class="pc-item">
-                                    <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/60 hover:text-white transition-all duration-200" href="#!">
-                                        Laba Rugi
-                                    </a>
-                                </li>
-                                <li class="pc-item">
-                                    <a class="pc-link group relative flex items-center px-3 py-2 rounded-lg text-white/60 hover:text-white transition-all duration-200" href="#!">
-                                        Penjualan Harian
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        <a href="{{ route('admin.profit.index') }}" class="pc-link group relative flex items-center justify-between px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200">
+                            <div class="flex items-center">
+                                <i class="fas fa-money-bill-wave text-sm mr-2"></i>
+                                Profit
+                            </div>
+                            <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+                        </a>
+
                     </ul>
                 </li>
-
                 <!-- Settings -->
                 <li class="pc-item mt-6">
                     <a href="#!" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">
