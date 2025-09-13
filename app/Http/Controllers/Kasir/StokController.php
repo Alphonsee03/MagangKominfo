@@ -11,7 +11,8 @@ class StokController extends Controller
     public function index()
     {
         $suppliers = Supplier::orderBy('nama')->get();
-        return view('kasir.gudang.index', compact('suppliers'));
+        $countProduk = Produk::count();
+        return view('kasir.gudang.index', compact('suppliers', 'countProduk'));
     }
 
     public function data(Request $request)

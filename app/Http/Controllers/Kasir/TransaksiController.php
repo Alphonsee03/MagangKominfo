@@ -150,7 +150,7 @@ class TransaksiController extends Controller
         $html = view('kasir.transaksi.invoice', compact('transaksi'))->render();
 
         $mpdf = new Mpdf([
-            'format' => 'A5', // bisa A4, A5, atau custom ['80', '200'] mm utk thermal
+            'format' => [100, 200], // bisa A4, A5, atau custom ['80', '200'] mm utk thermal
             'margin_top' => 10,
             'margin_bottom' => 10,
             'margin_left' => 10,

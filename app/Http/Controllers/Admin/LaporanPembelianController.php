@@ -98,7 +98,7 @@ class LaporanPembelianController extends Controller
             'total_nominal' => $total_nominal,
         ])->render();
 
-        $mpdf = new Mpdf(['mode' => 'utf-8', 'format' => 'A4']);
+        $mpdf = new Mpdf(['orientation' => 'L']);
         $mpdf->WriteHTML($html);
         return $mpdf->Output('laporan-pembelian.pdf', 'I');
     }

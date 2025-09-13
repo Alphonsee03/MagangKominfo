@@ -41,57 +41,47 @@
         <!-- Navigation Content -->
         <div class="navbar-content h-[calc(100vh_-_74px)] py-4 overflow-y-auto">
             <ul class="pc-navbar space-y-3 px-3">
-                <!-- Dashboard -->
-                <li class="pc-item">
-                    <a href="{{ route('kasir.dashboard.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
-                        <span class="pc-micon mr-3">
-                            <i class="fas fa-home text-lg"></i>
-                        </span>
-                        <span class="pc-mtext font-medium">Dashboard</span>
-                        <div class="absolute inset-0 bg-teal-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
-                    </a>
-                </li>
 
                 <!-- Transaksi Penjualan -->
                 <li class="pc-item">
-                    <a href="{{ route('kasir.transaksi.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
+                    <a href="{{ route('kasir.transaksi.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white hover:text-white hover:bg-teal-700/30 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-cash-register text-lg"></i>
                         </span>
-                        <span class="pc-mtext font-medium">Transaksi Penjualan</span>
+                        <span class="pc-mtext text-white font-medium">Kasir POS</span>
                         <div class="absolute inset-0 bg-teal-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
                     </a>
                 </li>
 
                 <!-- Riwayat Penjualan -->
                 <li class="pc-item">
-                    <a href="{{ route('kasir.transaksi.history') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
+                    <a href="{{ route('kasir.transaksi.history') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white hover:text-white hover:bg-teal-700/30 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-history text-lg"></i>
                         </span>
-                        <span class="pc-mtext font-medium">Riwayat Penjualan</span>
+                        <span class="pc-mtext text-white font-medium">Riwayat Penjualan</span>
                         <div class="absolute inset-0 bg-teal-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
                     </a>
                 </li>
 
                 <!-- Laporan Harian -->
                 <li class="pc-item">
-                    <a href="{{ route('kasir.laporan.harian') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
+                    <a href="{{ route('kasir.laporan.harian') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white hover:text-white hover:bg-teal-700/30 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-chart-line text-lg"></i>
                         </span>
-                        <span class="pc-mtext font-medium">Laporan Harian</span>
+                        <span class="pc-mtext text-white font-medium">Laporan Harian</span>
                         <div class="absolute inset-0 bg-teal-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
                     </a>
                 </li>
 
                 <!-- Stok Gudang -->
                 <li class="pc-item">
-                    <a href="{{ route('kasir.stok.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/90 hover:text-white hover:bg-teal-700/30 transition-all duration-200">
+                    <a href="{{ route('kasir.stok.index') }}" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white hover:text-white hover:bg-teal-700/30 transition-all duration-200">
                         <span class="pc-micon mr-3">
                             <i class="fas fa-boxes text-lg"></i>
                         </span>
-                        <span class="pc-mtext font-medium">Stok Gudang</span>
+                        <span class="pc-mtext text-white font-medium">Stok Gudang</span>
                         <div class="absolute inset-0 bg-teal-600/40 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
                     </a>
                 </li>

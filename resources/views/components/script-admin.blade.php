@@ -5,6 +5,14 @@
     <script src="{{ asset('assets/js/component.js') }}"></script>
     <script src="{{ asset('assets/js/theme.js') }}"></script>
     <script src="{{ asset('assets/js/script.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/timezone.js"></script>
+    <script>
+    dayjs.extend(window.dayjs_plugin_utc);
+    dayjs.extend(window.dayjs_plugin_timezone);
+    </script>
+
 
     <div class="floting-button fixed bottom-[50px] right-[30px] z-[1030]">
     </div>
@@ -41,9 +49,3 @@
     <script>
         main_layout_change('vertical');
     </script>
-
-
-</body>
-<!-- [Body] end -->
-
-</html>

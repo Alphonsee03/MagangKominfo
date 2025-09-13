@@ -1,0 +1,306 @@
+/* Tambahkan ini ke style yang sudah ada */
+
+/* Container untuk card dashboard admin */
+.admin-card-container {
+    position: relative;
+    height: 100%;
+}
+
+/* Lapisan belakang card */
+.admin-card-back {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 12px;
+    z-index: 0;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+/* Lapisan depan card */
+.admin-card-front {
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    height: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 1.25rem;
+    overflow: hidden;
+}
+
+/* Efek hover */
+.admin-card-container:hover .admin-card-front {
+    transform: translate(-2px, -2px);
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.admin-card-container:hover .admin-card-back {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+}
+
+/* Warna lapisan belakang untuk setiap card */
+.admin-layer-omzet {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+}
+
+.admin-layer-profit {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+}
+
+.admin-layer-transaksi {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+}
+
+.admin-layer-produk {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+.admin-layer-pembelian {
+    background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+}
+
+.admin-card-decor {
+    position: absolute;
+    right: -0.1rem;
+    bottom: -0.1rem;
+    width: 3rem;
+    height: 3rem;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-circle {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: conic-gradient(
+        currentColor calc(var(--percentage, 0) * 3.6deg),
+        rgba(255, 255, 255, 0.2) 0deg
+    );
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit; /* Warisi warna dari parent */
+}
+
+.progress-circle::before {
+    content: "";
+    position: absolute;
+    width: 2.1rem;
+    height: 2.1rem;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(160, 160, 160, 0.8);
+}
+
+.progress-text {
+    position: relative;
+    font-size: 0.6rem;
+    font-weight: 700;
+    z-index: 2;
+    color: inherit; /* Warisi warna dari parent */
+}
+
+/* Warna dekorasi */
+.admin-decor-omzet {
+    color: #3b82f6;
+}
+
+.admin-decor-profit {
+    color: #10b981;
+}
+
+.admin-decor-transaksi {
+    color: #8b5cf6;
+}
+
+.admin-decor-produk {
+    color: #f59e0b;
+}
+
+.admin-decor-pembelian {
+    color: #ef4444;
+}
+
+.admin-card-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* Container untuk card dengan lapisan */
+.stats-card-container {
+    position: relative;
+    height: 100%;
+}
+
+/* Lapisan belakang card */
+.stats-card-back {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: 12px;
+    z-index: 0;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+/* Lapisan depan card */
+.stats-card-front {
+    position: relative;
+    z-index: 10;
+    transition: all 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    padding: 1.25rem;
+    overflow: hidden;
+}
+
+/* Efek hover */
+.stats-card-container:hover .stats-card-front {
+    transform: translate(-2px, -2px);
+    box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.stats-card-container:hover .stats-card-back {
+    transform: translate(2px, 2px);
+    opacity: 0.8;
+}
+
+/* Warna lapisan belakang untuk setiap card */
+.stats-layer-produk {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+}
+
+.stats-layer-supplier {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+}
+
+.stats-layer-transaksi {
+    background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+}
+
+.stats-layer-stok {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+}
+
+/* Header card */
+.stats-card-header {
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f1f5f9;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.stats-card-header::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 30px;
+    height: 2px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
+}
+
+/* List styling */
+.stats-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stats-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
+
+.stats-list-item:hover {
+    background-color: #f8fafc;
+}
+
+.stats-list-item:nth-child(odd) {
+    background-color: #f8fafc;
+}
+
+.stats-list-item:nth-child(odd):hover {
+    background-color: #f1f5f9;
+}
+
+/* Table styling */
+.stats-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stats-table thead tr {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+}
+
+.stats-table th {
+    padding: 0.75rem;
+    text-align: left;
+    font-weight: 600;
+    color: #334155;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.stats-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.stats-table tbody tr {
+    transition: background-color 0.2s;
+}
+
+.stats-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.stats-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Badge untuk stok kritis */
+.stock-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.stock-low {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.stock-critical {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}

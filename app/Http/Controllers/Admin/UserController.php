@@ -29,7 +29,7 @@ class UserController extends Controller
             'nama' => 'required|string|max:225',
             'username' => 'required|string|max:25|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|string|max:8',
+            'password' => 'required|string|max:10',
             'role' => 'required|string|in:admin,kasir,supplier',
         ]);
 

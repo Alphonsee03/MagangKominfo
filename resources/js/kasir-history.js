@@ -16,9 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                    <span class="date-part">${tr.created_at.split('T')[0]}</span>
-                    <span class="time-separator mx-2">|</span>
-                    <span class="time-part">${tr.created_at.split('T')[1].split('.')[0]}</span>
+                    ${dayjs(tr.created_at).tz("Asia/Jakarta").format("DD/MM/YYYY HH:mm")}
                 </td>
                 <td class="p-3 font-mono text-sm font-semibold text-teal-600">${tr.invoice}</td>
                 <td class="p-3 text-sm text-gray-800">${tr.pelanggan ? tr.pelanggan.nama : "Umum"}</td>

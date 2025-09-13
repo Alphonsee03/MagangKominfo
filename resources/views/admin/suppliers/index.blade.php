@@ -1,4 +1,4 @@
-<x-header-admin>
+<x-header-admin title="Daftar Supplier">
     <style>
         .animate-fade-in {
             animation: fadeIn 0.5s ease-in-out;

@@ -1,4 +1,4 @@
-<x-header_kasir>
+<x-header_kasir title="Stok gudang">
     @vite('resources/js/kasir-stok.js')
     <x-navbar_kasir />
     <x-topheader />
@@ -16,8 +16,8 @@
                         </div>
                         Stok Produk
                     </h2>
-                    <div class="flex items-center space-x-2">
-                        <span class="text-sm text-gray-500" id="total-items">0 produk</span>
+                    <div class="flex items-center space-x-2 -translate-x-2">
+                        <span class="text-md text-slate-500" >{{ $countProduk }} Produk</span>
                     </div>
                 </div>
 
@@ -81,8 +81,8 @@
 
                 <!-- Pagination -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2">
-                    <div class="text-sm text-gray-600 mb-2 sm:mb-0">
-                        Menampilkan <span id="page-start">0</span> - <span id="page-end">0</span> dari <span id="total-count">0</span> produk
+                    <div class="text-sm text-slate-600 mb-2 sm:mb-0">
+                       <b> Menampilkan <span >15</span>  dari <span >{{ $countProduk }}</span> produk</b>
                     </div>
                     <div class="flex items-center space-x-2">
                         <button id="prev-page" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center">

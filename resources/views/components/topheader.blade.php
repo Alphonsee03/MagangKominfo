@@ -188,8 +188,8 @@
                                         <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="w-10 rounded-full" />
                                     </div>
                                     <div class="grow ms-3">
-                                        <h6 class="mb-1 text-white">Carson Darrin 🖖</h6>
-                                        <span class="text-white">carson.darrin@company.io</span>
+                                        <h6 class="mb-1 text-white">{{ Auth::user()->nama }}</h6>
+                                        <span class="text-white">{{ Auth::user()->email }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -220,12 +220,12 @@
                                         </span>
                                     </a>
                                     <div class="grid my-3">
-                                        <button class="btn btn-primary flex items-center justify-center">
+                                        <a href="{{ route('logout') }}" class="btn btn-primary flex items-center justify-center">
                                             <svg class="pc-icon me-2 w-[22px] h-[22px]">
                                                 <use xlink:href="#custom-logout-1-outline"></use>
                                             </svg>
                                             Logout
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

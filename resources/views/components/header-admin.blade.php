@@ -1,9 +1,11 @@
+@props(['title' => 'Dashboard'])
 <!doctype html>
 <html lang="en" data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-direction="ltr" dir="ltr" data-pc-theme="light">
 <!-- [Head] start -->
 
 <head>
-    <title>Home | Datta Able Dashboard Template</title>
+    <title>{{ $title ?? 'Dashboard' }} | Chasify </title>
+
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -19,7 +21,7 @@
 
 
     <!-- [Favicon] icon -->
-    <link rel="icon" href="{{ asset('assets/images/favicon.svg') }}" type="image/x-icon" />
+    <link rel="icon" href="{{ asset('assets/images/icontitle.svg') }}?v={{ time() }}" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- [Font] Family -->
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -40,4 +42,6 @@
 </head>
 
 <body>
-{{ $slot }}
+    {{ $slot }}
+</body>
+</html>

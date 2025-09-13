@@ -1,4 +1,4 @@
-<x-header-admin>
+<x-header-admin title="Manajemen Pengguna">
     <x-navbar />
     <x-topheader />
     <div class="pc-container">

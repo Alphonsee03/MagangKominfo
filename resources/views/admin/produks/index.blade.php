@@ -1,4 +1,5 @@
-<x-header-admin>
+<x-header-admin title="Manajemen Stok Produk">
+    
     @vite('resources/js/app.js')
     <x-navbar />
     <x-topheader />
@@ -271,11 +272,6 @@
         </div>
     </div>
 
-
-    <x-script-admin />
-    <script>
-
-    </script>
-
+    <x-script-admin/>
 
 </x-header-admin>

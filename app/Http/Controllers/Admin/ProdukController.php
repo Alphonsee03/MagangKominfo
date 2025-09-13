@@ -47,12 +47,6 @@ class ProdukController extends Controller
         return view('admin.produks.index', compact('produks', 'kategoris', 'suppliers'));
     }
 
-
-
-
-    /**
-     * Menampilkan form tambah produk
-     */
     public function create()
     {
         $kategoris = Kategori::orderBy('nama')->get(['id', 'nama']);
@@ -60,57 +54,32 @@ class ProdukController extends Controller
         return view('admin.produks.create', compact('kategoris', 'suppliers'));
     }
 
-    /**
-     * Simpan produk baru
-     */
+
     public function store(Request $request)
     {
         Log::info('Store Request:', $request->all());
 
-        $request->validate([
-            'suppliers'    => 'required|array',
-            'suppliers.*'  => 'exists:suppliers,id',
-            'kode_produk'  => 'required|string|max:100|unique:produks',
-            'nama'         => 'required|string|max:255',
-            'kategori_id'  => 'required|exists:kategoris,id',
-            'harga_beli'   => 'required|numeric|min:0',
-            'harga_jual'   => 'required|numeric|min:0',
-            'stok'         => 'required|integer|min:0',
-            'deskripsi'    => 'nullable|string',
-            'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        // Cek apakah request multiple (manual) atau single (AJAX)
+        $isAjax = $request->ajax();
 
-        DB::beginTransaction();
-        try {
-            $data = $request->except('suppliers');
+        if ($isAjax) {
+            // --- VALIDASI SINGLE PRODUK ---
+            $request->validate([
+                'suppliers'    => 'required|array',
+                'suppliers.*'  => 'exists:suppliers,id',
+                'kode_produk'  => 'required|string|max:15|unique:produks',
+                'nama'         => 'required|string|max:255',
+                'kategori_id'  => 'required|exists:kategoris,id',
+                'harga_beli'   => 'required|numeric|min:0',
+                'harga_jual'   => 'required|numeric|min:0',
+                'stok'         => 'required|integer|min:0',
+                'deskripsi'    => 'nullable|string',
+                'foto'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
 
-            if ($request->hasFile('foto')) {
-                $data['foto'] = $request->file('foto')->store('produk', 'public');
-            }
+            $produk = $this->storeSingle($request);
 
-            $produk = Produk::create($data);
-
-            // Simpan relasi supplier
-            $produk->suppliers()->attach($request->suppliers);
-
-            // Catat stok awal ke stok_logs
-            if ($produk->stok > 0) {
-                StokLog::create([
-                    'produk_id'  => $produk->id,
-                    'tipe'       => 'masuk',
-                    'jumlah'     => $produk->stok,
-                    'keterangan' => 'Input Produk',
-                    'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
-                ]);
-            }
-
-            DB::commit();
-        } catch (\Throwable $e) {
-            DB::rollBack();
-            return back()->withErrors(['error' => 'Gagal simpan produk: ' . $e->getMessage()]);
-        }
-        // Jika request via AJAX
-        if ($request->ajax()) {
+            // --- RETURN JSON untuk AJAX ---
             $produk->load(['kategori', 'suppliers']);
             return response()->json([
                 'success' => true,
@@ -118,12 +87,66 @@ class ProdukController extends Controller
                 'kategori_nama' => $produk->kategori->nama ?? '-',
                 'message' => 'Produk berhasil disimpan!'
             ]);
+        } else {
+            // --- VALIDASI MULTIPLE PRODUK ---
+            $request->validate([
+                'products'                   => 'required|array',
+                'products.*.suppliers'       => 'required|array',
+                'products.*.suppliers.*'     => 'exists:suppliers,id',
+                'products.*.kode_produk'     => 'required|string|max:15|unique:produks,kode_produk',
+                'products.*.nama'            => 'required|string|max:255',
+                'products.*.kategori_id'     => 'required|exists:kategoris,id',
+                'products.*.harga_beli'      => 'required|numeric|min:0',
+                'products.*.harga_jual'      => 'required|numeric|min:0',
+                'products.*.stok'            => 'required|integer|min:0',
+                'products.*.deskripsi'       => 'nullable|string',
+                'products.*.foto'            => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ]);
+
+            DB::beginTransaction();
+            try {
+                foreach ($request->products as $productData) {
+                    $this->storeSingle(new Request($productData));
+                }
+                DB::commit();
+            } catch (\Throwable $e) {
+                DB::rollBack();
+                return back()->withErrors(['error' => 'Gagal simpan produk: ' . $e->getMessage()]);
+            }
+
+            return redirect()
+                ->route('admin.produks.index')
+                ->with('success', 'Semua produk berhasil ditambahkan.');
+        }
+    }
+
+    private function storeSingle(Request $request)
+    {
+        $data = $request->except('suppliers');
+
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('produk', 'public');
         }
 
-        return redirect()
-            ->route('admin.produks.index')
-            ->with('success', 'Produk berhasil ditambahkan.');
+        $produk = Produk::create($data);
+
+        // Relasi supplier
+        $produk->suppliers()->attach($request->suppliers);
+
+        // Stok awal
+        if ($produk->stok > 0) {
+            StokLog::create([
+                'produk_id'  => $produk->id,
+                'tipe'       => 'masuk',
+                'jumlah'     => $produk->stok,
+                'keterangan' => 'Input Produk ' . $produk->nama,
+                'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
+            ]);
+        }
+
+        return $produk;
     }
+
 
 
     /**
@@ -146,7 +169,7 @@ class ProdukController extends Controller
             'suppliers'    => 'required|array',
             'suppliers.*'  => 'exists:suppliers,id',
             'kategori_id'  => 'required|exists:kategoris,id',
-            'kode_produk'  => 'required|string|max:100|unique:produks,kode_produk,' . $produk->id,
+            'kode_produk'  => 'required|string|max:15|unique:produks,kode_produk,' . $produk->id,
             'nama'         => 'required|string|max:255',
             'harga_beli'   => 'required|numeric|min:0',
             'harga_jual'   => 'required|numeric|min:0',
@@ -180,7 +203,7 @@ class ProdukController extends Controller
                     'produk_id'  => $produk->id,
                     'tipe'       => $delta > 0 ? 'masuk' : 'keluar',
                     'jumlah'     => abs($delta),
-                    'keterangan' => 'Penyesuaian stok (edit produk)',
+                    'keterangan' => 'Penyesuaian stok' . $produk->nama,
                     'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
                 ]);
             }
@@ -225,7 +248,7 @@ class ProdukController extends Controller
                     'produk_id'  => $produk->id,
                     'tipe'       => 'keluar',
                     'jumlah'     => $produk->stok,
-                    'keterangan' => 'Write-off stok karena hapus produk',
+                    'keterangan' => 'hapus/retur produk' . $produk->nama,
                     'user_id'    => Auth::guard('admin')->id() ?? Auth::id(),
                 ]);
             }
@@ -262,10 +285,19 @@ class ProdukController extends Controller
     public function updateStok(Request $request, Produk $produk)
     {
         $request->validate([
-            'stok' => 'required|integer|min:1', // Ubah dari 'jumlah' ke 'stok'
+            'stok' => 'required|integer|min:1',
         ]);
 
         $produk->increment('stok', $request->stok);
+
+        StokLog::create([
+            'produk_id'     => $produk->id,
+            'tipe'          => 'masuk',
+            'jumlah'        => $request->stok,
+            'keterangan'    => 'Tambah stok' . $produk->nama,
+            'transaksi_id'  => null,
+            'user_id'       => auth('admin')->id(),
+        ]);
 
         return response()->json([
             'success' => true,

@@ -13,7 +13,8 @@ class LaporanController extends Controller
     public function stokGudang(Request $request)
     {
         $suppliers = Supplier::all();
-        return view('admin.laporan.stok_gudang.stok-gudang', compact('suppliers'));
+        $produks = Produk::with('suppliers')->get();
+        return view('admin.laporan.stok_gudang.stok-gudang', compact('suppliers', 'produks'));
     }
 
     public function stokGudangData(Request $request)
@@ -35,6 +36,7 @@ class LaporanController extends Controller
                 'harga_jual'  => $p->harga_jual,
                 'nilai_stok'  => $p->stok * $p->harga_beli,
                 'suppliers'   => $p->suppliers->pluck('nama')->implode(', '),
+                
             ];
         });
 
@@ -55,7 +57,7 @@ class LaporanController extends Controller
 
         $html = view('admin.laporan.stok_gudang.pdf.stok-gudang', compact('produks'))->render();
 
-        $mpdf = new Mpdf();
+        $mpdf = new Mpdf(['orientation' => 'L']);
         $mpdf->WriteHTML($html);
         return $mpdf->Output("laporan-stok-gudang.pdf", "I");
     }

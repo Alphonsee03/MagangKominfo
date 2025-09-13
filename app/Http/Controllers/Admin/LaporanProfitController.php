@@ -60,6 +60,7 @@ class LaporanProfitController extends Controller
                 'total_penjualan' => $total_penjualan,
                 'total_modal'     => $total_modal,
                 'profit'          => $total_penjualan - $total_modal,
+                'total_transaksi' => $details->count(),
             ],
             'data' => $rows,
         ]);
@@ -106,6 +107,7 @@ class LaporanProfitController extends Controller
         'total_penjualan' => $total_penjualan,
         'total_modal'     => $total_modal,
         'profit'          => $total_penjualan - $total_modal,
+        'total_transaksi' => $details->count(),
     ];
 
     $html = view('admin.laporan.profit.pdf', [

@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\KategotiController;
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\UserController;
@@ -32,6 +32,9 @@ Route::get('/autherror', [AuthController::class, 'autherror'])->name('autherror'
 
 Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('dashboard/data', [AdminDashboardController::class, 'data'])->name('dashboard.data');
+    Route::get('dashboard/years', [AdminDashboardController::class, 'years']);
+
     Route::resource('/users', UserController::class);
     Route::resource('produks', AdminProdukController::class);
     Route::post('produks/{produk}/update-stok', [AdminProdukController::class, 'updateStok'])->name('produks.updateStok');
@@ -42,7 +45,6 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     Route::get('/transaksi/data', [AdminTransaksiController::class, 'data'])->name('transaksi.data');
     Route::get('/transaksi/{id}/detail', [AdminTransaksiController::class, 'detail'])->name('transaksi.detail');
     Route::get('/transaksi/export/pdf', [AdminTransaksiController::class, 'exportPdf'])->name('transaksi.export.pdf');
-    Route::get('/transaksi/export/excel', [AdminTransaksiController::class, 'exportExcel'])->name('transaksi.export.excel');
     Route::get('/transaksi/{id}/export-pdf', [AdminTransaksiController::class, 'exportDetailPdf'])
     ->name('transaksi.export.detail.pdf');
 

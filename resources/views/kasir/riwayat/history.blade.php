@@ -1,11 +1,11 @@
-<x-header_kasir>
+<x-header_kasir title="Riwayat Transaksi">
     @vite('resources/js/kasir-history.js')
     <x-navbar_kasir />
     <x-topheader />
 
     <div class="pc-container">
         <div class="pc-content">
-            <div class="p-6 space-y-6">
+            <div class="p-6 space-y-6 -mt-10 ">
 
                 <!-- Header -->
                 <div class="flex items-center justify-between">

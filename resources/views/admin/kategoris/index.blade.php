@@ -1,4 +1,4 @@
-<x-header-admin>
+<x-header-admin title="Daftar Kategori">
     <x-navbar />
     <x-topheader />
 

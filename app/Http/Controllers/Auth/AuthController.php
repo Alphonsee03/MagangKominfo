@@ -63,7 +63,7 @@ class AuthController extends Controller
 
         // Redirect sesuai role yang dipilih
         if ($request->role === 'kasir') {
-            return redirect()->route('kasir.dashboard.index')->with('success', 'Registrasi berhasil sebagai Kasir!');
+            return redirect()->route('kasir.transaksi.index')->with('success', 'Registrasi berhasil sebagai Kasir!');
         } else {
             return redirect()->route('supplier.dashboard.index')->with('success', 'Registrasi berhasil sebagai Supplier!');
         }

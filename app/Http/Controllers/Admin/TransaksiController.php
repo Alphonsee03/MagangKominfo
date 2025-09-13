@@ -104,7 +104,7 @@ class TransaksiController extends Controller
             'total_bayar' => $query->sum('bayar'),
             'total_kembali' => $query->sum('kembali'),
         ];
-        $mpdf = new Mpdf();
+        $mpdf = new Mpdf(['orientation' => 'L']);
         $html = view('admin.transaksi.export-pdf', [
             'transaksis' => $query,
             'summary' => $summary,

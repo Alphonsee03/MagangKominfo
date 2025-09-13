@@ -141,8 +141,8 @@
                         <!-- Pembelian Submenu -->
                         <a href="{{ route('admin.pembelian.index') }}" class="pc-link group relative flex items-center justify-between px-3 py-2 rounded-lg text-white/70 hover:text-white transition-all duration-200">
                             <div class="flex items-center">
-                                <i class="fas fa-shopping-bag text-sm mr-2"></i>
-                                Pembelian
+                                <i class="fas fa-shopping-bag text-sm -ml-3 mr-2"></i>
+                                Pembelian Stok
                             </div>
                             <div class="absolute inset-0 bg-white/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                         </a>

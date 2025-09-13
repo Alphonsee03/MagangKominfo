@@ -14,15 +14,23 @@ document.addEventListener("DOMContentLoaded", () => {
         json.data.forEach((row, i) => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-                <td class="p-2 border text-center">${i+1}</td>
-                <td class="p-2 border">${row.tanggal}</td>
-                <td class="p-2 border">${row.produk}</td>
-                <td class="p-2 border">${row.kode}</td>
-                <td class="p-2 border">${row.supplier}</td>
-                <td class="p-2 border text-right">${row.jumlah}</td>
-                <td class="p-2 border text-right">Rp ${parseInt(row.harga_beli).toLocaleString()}</td>
-                <td class="p-2 border text-right">Rp ${parseInt(row.subtotal).toLocaleString()}</td>
-                <td class="p-2 border">${row.keterangan ?? '-'}</td>
+                <td class="p-1 text-center text-gray-900 font-medium">${i+1}</td>
+                <td class="p-4 text-center text-gray-700">${row.tanggal}</td>
+                <td class="p-4 text-center text-gray-900 font-medium">${row.produk}</td>
+                <td class="p-4 text-center font-mono text-sm text-teal-700">${row.kode}</td>
+                <td class="p-4 text-center">
+                    <span class="px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        ${row.supplier}
+                    </span>
+                </td>
+                <td class="p-4 text-center">
+                    <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        ${row.jumlah} pcs
+                    </span>
+                </td>
+                <td class="p-4 text-center font-mono text-sm text-gray-700">Rp ${parseInt(row.harga_beli).toLocaleString('id-ID')}</td>
+                <td class="p-4 text-center font-mono text-sm text-blue-800 font-bold">Rp ${parseInt(row.subtotal).toLocaleString('id-ID')}</td>
+                <td class="p-4 text-center text-sm text-gray-600">${row.keterangan ?? '-'}</td>
             `;
             tbody.appendChild(tr);
         });

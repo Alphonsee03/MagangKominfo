@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnAdd = document.getElementById("btn-add");
     const cartBody = document.getElementById("cart-body");
     const cartTotal = document.getElementById("cart-total");
+    const cartTotalBayar = document.getElementById("cart-total-bayar");
     const btnReset = document.getElementById("btn-reset");
     const btnBayar = document.getElementById("btn-bayar");
     const modalBayar = document.getElementById("modal-bayar");
@@ -28,17 +29,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 cartBody.innerHTML = "";
                 Object.values(data.cart).forEach((item) => {
                     cartBody.innerHTML += `
-                        <tr class="border-b cart-item-row hover:bg-gray-50 transition-colors duration-200">
-                        <td class="py-3 px-4 font-mono text-sm text-gray-700">${item.kode}</td>
-                        <td class="py-3 px-4 font-bold text-slate-800">${item.nama}</td>
-                        <td class="py-3 px-4 text-center">
+                        <tr class="border-b cart-item-row hover:bg-slate-600 transition-colors duration-200">
+                        <td class="py-5 px-6 font-mono text-md text-center text-gray-700">${item.kode}</td>
+                        <td class="py-5 px-6 font-bold text-md text-center text-slate-800">${item.nama}</td>
+                        <td class="py-5 px-6 text-center text-md font-semibold">
                             <input type="number" value="${item.qty}" min="1" 
                                 class="w-20 border border-gray-300 rounded-lg py-1.5 px-3 text-center focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all"
                                 onchange="updateQty(${item.produk_id}, this.value)">
                         </td>
-                        <td class="py-3 px-4 text-right font-medium text-gray-900">${item.harga}</td>
-                        <td class="py-3 px-4 text-right font-semibold text-indigo-600">${item.subtotal}</td>
-                        <td class="py-3 px-4 text-center">
+                        <td class="py-5 px-6 text-center text-md font-medium text-gray-900">${item.harga.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.').replace(/\.00$/, '')}</td>
+                        <td class="py-5 px-6 text-center text-md font-semibold text-indigo-600">${item.subtotal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')}</td>
+                        <td class="py-5 px-6 text-center">
                             <button onclick="removeItem(${item.produk_id})" class="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-full transition-colors duration-200">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -47,7 +48,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         </td>
                     </tr>`;
                 });
-                cartTotal.innerText = data.total;
+                cartTotal.innerText = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                cartTotalBayar.innerText = data.total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
             });
     }
 
@@ -173,92 +175,130 @@ document.addEventListener("DOMContentLoaded", () => {
             modalBayar && !modalBayar.classList.contains("hidden");
 
         document.addEventListener("keydown", function (e) {
-            const active = document.activeElement;
+    const active = document.activeElement;
 
-            // SHIFT+I → fokus ke input kode
-            if (e.key.toLowerCase() === "i" && e.shiftKey) {
-                e.preventDefault();
+    // SHIFT+I → fokus ke input kode
+    if (e.key.toLowerCase() === "i" && e.shiftKey) {
+        e.preventDefault();
+        const kode = document.getElementById("kode_produk");
+        if (kode) kode.focus();
+        return;
+    }
+    
+    if (e.key.toLowerCase() === "b" && e.shiftKey) {
+        e.preventDefault();
+        const btnBayar = document.getElementById("btn-bayar");
+        if (btnBayar) {
+            btnBayar.click();
+            // beri waktu modal render
+            setTimeout(() => {
+                const diskon = document.querySelector('#modal-bayar input[name="diskon"]');
+                if (diskon) diskon.focus();
+            }, 120);
+        }
+        return;
+    }
+
+    // ESC → reset
+    if (e.key === "Escape") {
+        e.preventDefault();
+        const btnReset = document.getElementById("btn-reset");
+        if (btnReset) btnReset.click();
+        return;
+    }
+
+    // TAB → keluar dari kode_produk
+    if (e.key === "Tab" && active?.id === "kode_produk") {
+        e.preventDefault();
+        active.blur();
+        return;
+    }
+
+    // ====== ENTER routing ======
+    if (e.key === "Enter") {
+        if (active?.name === "diskon") {
+            e.preventDefault();
+            e.stopPropagation();
+            const bayar = document.querySelector('#modal-bayar input[name="bayar"]');
+            if (bayar) bayar.focus();
+            return;
+        }
+
+        if (active?.name === "bayar") {
+            e.preventDefault();
+            e.stopPropagation();
+            const submitBtn =
+                document.querySelector('#modal-bayar button[type="submit"]') ||
+                document.querySelector("#modal-bayar .btn-submit-bayar");
+            if (submitBtn) submitBtn.click();
+            return;
+        }
+
+        if (active?.id === "kode_produk") {
+            e.preventDefault();
+            const qty = document.getElementById("qty");
+            if (qty) qty.focus();
+            return;
+        }
+
+        if (active?.id === "qty") {
+            e.preventDefault();
+            const btnAdd = document.getElementById("btn-add");
+            if (btnAdd) {
+                btnAdd.click();
                 const kode = document.getElementById("kode_produk");
                 if (kode) kode.focus();
-                return;
             }
+            return;
+        }
 
-            // ESC → reset
-            if (e.key === "Escape") {
-                e.preventDefault();
-                const btnReset = document.getElementById("btn-reset");
-                if (btnReset) btnReset.click();
-                return;
+        if (!isModalOpen() && active?.id !== "kode_produk" && active?.id !== "qty") {
+            e.preventDefault();
+            const btnBayar = document.getElementById("btn-bayar");
+            if (btnBayar) {
+                btnBayar.click();
+                setTimeout(() => {
+                    const diskon = document.querySelector('#modal-bayar input[name="diskon"]');
+                    if (diskon) diskon.focus();
+                }, 120);
             }
-
-            // ====== ENTER routing ======
-            if (e.key === "Enter") {
-                // 1) Di modal: diskon → pindah ke bayar
-                if (active?.name === "diskon") {
-                    e.preventDefault();
-                    e.stopPropagation(); // cegah handler global
-                    const bayar = document.querySelector(
-                        '#modal-bayar input[name="bayar"]'
-                    );
-                    if (bayar) bayar.focus();
-                    return;
-                }
-
-                // 2) Di modal: bayar → klik submit
-                if (active?.name === "bayar") {
-                    e.preventDefault();
-                    e.stopPropagation(); // cegah handler global
-                    const submitBtn =
-                        document.querySelector(
-                            '#modal-bayar button[type="submit"]'
-                        ) ||
-                        document.querySelector(
-                            "#modal-bayar .btn-submit-bayar"
-                        );
-                    if (submitBtn) submitBtn.click();
-                    return;
-                }
-
-                // 3) Di form produk: kode → pindah qty
-                if (active?.id === "kode_produk") {
-                    e.preventDefault();
-                    const qty = document.getElementById("qty");
-                    if (qty) qty.focus();
-                    return;
-                }
-
-                // 4) Di form produk: qty → klik tambah + balik ke kode (loop)
-                if (active?.id === "qty") {
-                    e.preventDefault();
-                    const btnAdd = document.getElementById("btn-add");
-                    if (btnAdd) {
-                        btnAdd.click();
-                        const kode = document.getElementById("kode_produk");
-                        if (kode) kode.focus();
-                    }
-                    return;
-                }
-
-                // 5) Di luar input produk & modal TERTUTUP → buka modal & fokus diskon
-                if (
-                    !isModalOpen() &&
-                    active?.id !== "kode_produk" &&
-                    active?.id !== "qty"
-                ) {
-                    e.preventDefault();
-                    const btnBayar = document.getElementById("btn-bayar");
-                    if (btnBayar) {
-                        btnBayar.click();
-                        // beri waktu modal render sebelum fokus
-                        setTimeout(() => {
-                            const diskon = document.querySelector(
-                                '#modal-bayar input[name="diskon"]'
-                            );
-                            if (diskon) diskon.focus();
-                        }, 120);
-                    }
-                }
-            }
-        });
+        }
     }
+});
+
+// Auto select Qty saat fokus
+const qty = document.getElementById("qty");
+if (qty) {
+    qty.addEventListener("focus", function () {
+        this.select();
+    });
+}
+
+    }
+    // QR Code Scanner (optional)
+    // butuh library tambahan: html5-qrcode.min.js
+
+    // function onScanSuccess(decodedText, decodedResult) {
+    //     // tampilkan kode ke input
+    //     document.getElementById("kode_produk").value = decodedText;
+
+    //     // opsional: trigger pencarian produk via AJAX
+    //     fetch(`/api/produk/${decodedText}`)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             console.log("Produk ditemukan:", data);
+    //             // bisa langsung tambahkan ke keranjang
+    //         })
+    //         .catch(err => console.error(err));
+    // }
+
+    // // Jalankan scanner
+    // const html5QrCode = new Html5Qrcode("reader");
+    // html5QrCode.start(
+    // { facingMode: "environment" }, // kamera belakang kalau di HP
+    // { fps: 10, qrbox: 250 },
+    // onScanSuccess
+    // );
+
+
 });

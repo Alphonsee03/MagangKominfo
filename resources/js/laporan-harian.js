@@ -31,14 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.produk_terlaris && data.produk_terlaris.length > 0) {
             data.produk_terlaris.forEach((p, index) => {
                 const row = document.createElement("tr");
-                row.className = index % 2 === 0 ? "bg-rose-800/10" : "";
+                row.className = index % 2 === 0 ? "bg-rose-800/20" : "";
 
                 const cellProduk = document.createElement("td");
-                cellProduk.className = "py-2 truncate max-w-[100px]";
+                cellProduk.className = "py-2 px-2 truncate justify-between rounded-sm text-slate-900 font-bold max-w-[100px]";
                 cellProduk.textContent = p.produk;
 
                 const cellQty = document.createElement("td");
-                cellQty.className = "py-2 text-right font-bold";
+                cellQty.className = "py-2 px-2 rounded-sm text-center font-bold text-slate-900";
                 cellQty.textContent = `${p.qty} pcs`;
 
                 row.appendChild(cellProduk);
@@ -64,21 +64,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     const time = transaction.split(" - ");
                     return `
             <tr class="${index % 2 === 0 ? "bg-violet-400 rounded-lg" : ""}">
-                <td class="py-2 text-center text-sm font-mono">${time}</td>
-                <td class="py-2 text-right font-bold"></td>
+                <td class="py-2 text-center text-lg rounded-md text-slate-900 font-bold font-mono">${time}</td>
             </tr>
         `;
                 })
                 .join("");
         } else {
             tableBodyy.innerHTML =
-                '<tr><td colspan="2" class="text-center py-3 text-violet-200/80">Tidak ada data</td></tr>';
+                '<tr><td colspan="2" class="text-center py-3 text-slate-700">Tidak ada data</td></tr>';
         }
 
         if (metodeChart) metodeChart.destroy();
 
         metodeChart = new Chart(ctx, {
-            type: "pie",
+            type: "doughnut",
             data: {
                 labels: labels,
                 datasets: [
@@ -91,7 +90,15 @@ document.addEventListener("DOMContentLoaded", () => {
             options: {
                 responsive: true,
                 plugins: {
-                    legend: { position: "bottom" },
+                    legend: { position: "bottom", 
+                            display: true,
+                            labels: {
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                padding: 20,
+                                boxWidth: 10,
+                            }
+                    },
                     tooltip: {
                         callbacks: {
                             label: function (context) {

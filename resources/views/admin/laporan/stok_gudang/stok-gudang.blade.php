@@ -1,9 +1,9 @@
-<x-header-admin>
+<x-header-admin title="Laporan Stok Gudang">
     <x-navbar />
     <x-topheader />
     <div class="pc-container">
         <div class="pc-content">
-            <div class="p-6 space-y-6">
+            <div class="p-6 space-y-6 -mt-8">
                 <!-- Header -->
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <h2 class="text-2xl font-bold text-gray-900 flex items-center">
@@ -13,8 +13,7 @@
                             </svg>
                         </div>
                         Laporan Stok Gudang
-                    </h2>
-                    <span class="text-sm text-gray-500 mt-2 sm:mt-0" id="total-items">0 produk</span>
+                    </h2> 
                 </div>
 
                 <!-- Filter Section -->
@@ -80,15 +79,15 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                         <div>
                             <p class="text-sm text-teal-700 font-medium">Total Nilai Stok</p>
-                            <p class="text-xl font-bold text-teal-800" id="total-nilai">Rp 0</p>
+                            <p class="text-xl font-bold text-teal-800" id="total-nilai">Rp {{ number_format($produks->sum('stok') * $produks->sum('harga_beli'), 0, ',', '.') }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-teal-700 font-medium">Total Produk</p>
-                            <p class="text-xl font-bold text-teal-800" id="total-produk">0</p>
+                            <p class="text-xl font-bold text-teal-800" id="total-produk">{{ $produks->count() }}</p>
                         </div>
                         <div>
                             <p class="text-sm text-teal-700 font-medium">Rata-rata Stok</p>
-                            <p class="text-xl font-bold text-teal-800" id="rata-stok">0</p>
+                            <p class="text-xl font-bold text-teal-800" id="rata-stok">{{ $produks->count() > 0 ? number_format($produks->sum('stok') / $produks->count(), 0, ',', '.') : 0 }}</p>
                         </div>
                     </div>
                 </div>
