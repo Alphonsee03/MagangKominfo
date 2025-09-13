@@ -40,34 +40,28 @@ class AuthController extends Controller
         return view('auth.register');
     }
 
-    public function submitregister(Request $request)
+    public function submitRegister(Request $request)
+{
+    $request->validate([
+        'nama' => 'required|string|max:225',
+        'username' => 'required|string|max:25|unique:users',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|string|max:12|confirmed',
+    ]);
 
-    {
+    User::create([
+        'nama' => $request->nama,
+        'username' => $request->username,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+        'role' => 'kasir',
+    ]);
 
-        // Hapus merge role, biarkan user memilih antara kasir atau supplier
-        $request->validate([
-            'nama' => 'required|string|max:225',
-            'username' => 'required|string|max:25|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|max:8|confirmed',
-            'role' => 'required|string|in:kasir,supplier', // hanya kasir dan supplier
-        ]);
+    return redirect()
+        ->route('kasir.transaksi.index')
+        ->with('success', 'Registrasi berhasil sebagai Kasir!');
+}
 
-        User::create([
-            'nama' => $request->nama,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
-
-        // Redirect sesuai role yang dipilih
-        if ($request->role === 'kasir') {
-            return redirect()->route('kasir.transaksi.index')->with('success', 'Registrasi berhasil sebagai Kasir!');
-        } else {
-            return redirect()->route('supplier.dashboard.index')->with('success', 'Registrasi berhasil sebagai Supplier!');
-        }
-    }
 
     public function logout()
     {

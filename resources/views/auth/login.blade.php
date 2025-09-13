@@ -11,15 +11,14 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-
+    
 
         body::before {
             content: "";
             position: absolute;
             width: 150%;
             height: 150%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
-            animation: pulse 15s infinite alternate;
+            background: rgba(0, 0, 0, 0.4);
             top: -25%;
             left: -25%;
         }
@@ -163,7 +162,7 @@
                     <p class="text-white/70">Sistem Point of Sale Modern</p>
                 </div>
 
-                <h4 class="text-center font-bold text-white text-xl mb-6">Masuk ke Akun Anda</h4>
+                <h4 class="text-center font-bold text-white text-2xl mb-6">Login</h4>
 
                 <form action="{{ route('login.submit') }}" method="POST">
                     @csrf

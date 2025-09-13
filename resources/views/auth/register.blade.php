@@ -17,8 +17,7 @@
             position: absolute;
             width: 150%;
             height: 150%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 70%);
-            animation: pulse 15s infinite alternate;
+            background: rgba(0, 0, 0, 0.4);
             top: -25%;
             left: -25%;
             z-index: 0;
@@ -248,20 +247,6 @@
                     <i class="fas fa-lock input-icon"></i>
                     <input type="password" name="password_confirmation" id="confirmPassword" class="form-control py-3" placeholder="Konfirmasi Password" required>
                     <div class="text-xs text-red-400 mt-1 hidden" id="passwordError">Password tidak cocok</div>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block mb-2 font-medium text-white/80 text-sm">Role</label>
-                    <div class="flex gap-4">
-                        <label class="inline-flex items-center">
-                            <input type="radio" name="role" value="admin" class="form-radio" required>
-                            <span class="ml-2 text-white/80 text-sm">Admin</span>
-                        </label>
-                        <label class="inline-flex items-center">
-                            <input type="radio" name="role" value="kasir" class="form-radio" required>
-                            <span class="ml-2 text-white/80 text-sm">Kasir</span>
-                        </label>
-                    </div>
                 </div>
 
                 <div class="flex items-center mb-5">
