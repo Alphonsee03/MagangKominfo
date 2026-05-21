@@ -157,7 +157,6 @@
             <nav class="hidden md:flex space-x-2">
                 <a href="#" id="docsBtn" class="px-4 py-2 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition">Docs</a>
                 <a href="{{ route('login') }}" class="px-4 py-2 rounded-lg text-white font-medium hover:bg-white hover:bg-opacity-10 transition">Login</a>
-                <a href="{{ route('register') }}" class="px-4 py-2 rounded-lg text-white font-medium bg-white bg-opacity-20 hover:bg-opacity-30 transition">Register</a>
             </nav>
 
             <!-- Mobile menu button -->
@@ -339,7 +338,7 @@
     <div id="modal-get-started" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
         <div class="glass-card rounded-2xl p-8 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold text-white">Pilih Paket Cashify</h2>
+                <h2 class="text-2xl font-bold text-white">List Harga Cashify</h2>
                 <button id="close-get-started" class="text-white text-opacity-70 hover:text-opacity-100">
                     <i class="fas fa-times text-2xl"></i>
                 </button>
@@ -356,7 +355,6 @@
                         <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Dukungan Email</li>
                         <li><i class="fas fa-times-circle text-red-400 mr-2"></i> Laporan Lanjutan</li>
                     </ul>
-                    <button class="btn-primary w-full py-3 rounded-xl font-semibold">Pilih Paket</button>
                 </div>
 
                 <!-- Paket Business -->
@@ -370,7 +368,6 @@
                         <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Dukungan Prioritas</li>
                         <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Laporan Lanjutan</li>
                     </ul>
-                    <button class="btn-primary w-full py-3 rounded-xl font-semibold">Pilih Paket</button>
                 </div>
 
                 <!-- Paket Enterprise -->
@@ -383,7 +380,6 @@
                         <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Dukungan 24/7</li>
                         <li><i class="fas fa-check-circle text-green-400 mr-2"></i> Fitur Kustom</li>
                     </ul>
-                    <button class="btn-primary w-full py-3 rounded-xl font-semibold">Hubungi Sales</button>
                 </div>
             </div>
 
