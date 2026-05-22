@@ -192,6 +192,7 @@
             transition: all 0.3s ease;
             width: 0%;
         }
+        
     </style>
 </head>
 
@@ -209,14 +210,29 @@
             <div class="absolute -bottom-12 -left-12 w-24 h-24 rounded-full bg-purple-400 opacity-20 blur-xl"></div>
 
             <!-- Header -->
-            <div class="text-center mb-6 floating-element">
+            <div class="text-center mb-6 floating-element relative" style="animation: none;">
+            
+                <!-- Button Back -->
+                <a href="{{ route('login') }}" class="absolute left-0 top-2 w-11 h-11 flex items-center justify-center 
+                      rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 
+                     text-white shadow-lg hover:bg-white/20 transition-all duration-300 z-10">
+                    <i class="fas fa-arrow-left text-sm"></i>
+                </a>
+            
+                <!-- Logo -->
                 <div class="inline-flex items-center justify-center w-16 h-16 rounded-xl bg-white/10 backdrop-blur-md mb-3 mx-auto">
                     <i class="fas fa-user-plus text-2xl text-white"></i>
                 </div>
+            
+                <!-- Title -->
                 <h4 class="text-xl font-semibold bg-gradient-to-r from-teal-300 to-sky-400 bg-clip-text text-transparent">
                     Register
                 </h4>
-                <p class="text-white/70 text-sm mt-1">Buat akun Cashify POS Anda</p>
+            
+                <!-- Subtitle -->
+                <p class="text-white/70 text-sm mt-1">
+                    Buat akun Cashify POS Anda
+                </p>
             </div>
 
             <!-- Form -->
@@ -237,21 +253,95 @@
                     <input type="email" name="email" class="form-control py-3" placeholder="Email Address" required>
                 </div>
 
-                <div class="mb-3 relative">
+               <div class="mb-3">
+                <div class="relative">
+                    <!-- Icon Lock -->
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" name="password" id="password" class="form-control py-3" placeholder="Password" required>
-                    <div class="password-strength" id="passwordStrength"></div>
+
+                    <!-- Input Password -->
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password" 
+                        class="form-control py-3 pr-12" 
+                        placeholder="Password" 
+                        required
+                    >
+
+                    <!-- Button Mata -->
+                    <button 
+                        type="button"
+                        onclick="togglePassword('password', 'eyeIcon1')"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white flex items-center justify-center"
+                    >
+                        <i id="eyeIcon1" class="fas fa-eye"></i>
+                    </button>
                 </div>
 
-                <div class="mb-3 relative">
+                <!-- Password Strength -->
+                <div class="password-strength mt-2" id="passwordStrength"></div>
+            </div>
+
+            <div class="mb-3">
+                <div class="relative">
+                    <!-- Icon Lock -->
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" name="password_confirmation" id="confirmPassword" class="form-control py-3" placeholder="Konfirmasi Password" required>
-                    <div class="text-xs text-red-400 mt-1 hidden" id="passwordError">Password tidak cocok</div>
+
+                    <!-- Input Konfirmasi Password -->
+                    <input 
+                        type="password" 
+                        name="password_confirmation" 
+                        id="confirmPassword" 
+                        class="form-control py-3 pr-12" 
+                        placeholder="Konfirmasi Password" 
+                        required
+                    >
+
+                    <!-- Button Mata -->
+                    <button 
+                        type="button"
+                        onclick="togglePassword('confirmPassword', 'eyeIcon2')"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white flex items-center justify-center"
+                    >
+                        <i id="eyeIcon2" class="fas fa-eye"></i>
+                    </button>
                 </div>
 
-                <div class="flex items-center mb-5">
-                    <input class="form-check-input mr-2" type="checkbox" id="customCheckc1" required />
-                    <label class="text-white/80 text-xs" for="customCheckc1">Saya menyetujui semua Syarat & Ketentuan</label>
+                <!-- Error Password -->
+                <div class="text-xs text-red-400 mt-1 hidden" id="passwordError">
+                    Password tidak cocok
+                </div>
+            </div>
+
+            <script>
+                function togglePassword(inputId, iconId) {
+                    const input = document.getElementById(inputId);
+                    const icon = document.getElementById(iconId);
+
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.classList.remove("fa-eye");
+                        icon.classList.add("fa-eye-slash");
+                    } else {
+                        input.type = "password";
+                        icon.classList.remove("fa-eye-slash");
+                        icon.classList.add("fa-eye");
+                    }
+                }
+            </script>
+
+                <div class="flex items-center justify-between mb-5">
+                    <div class="flex items-center">
+                        <input class="form-check-input mr-2" type="checkbox" id="customCheckc1" required />
+                        <label class="text-white/80 text-xs" for="customCheckc1">
+                            Saya menyetujui semua Syarat & Ketentuan
+                        </label>
+                    </div>
+                
+                    <!-- Button Reset -->
+                    <button type="reset" class="text-action-btn text-sky-400">
+                        Reset All
+                    </button>
                 </div>
 
                 <div class="mt-2">
