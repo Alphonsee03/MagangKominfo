@@ -2,20 +2,40 @@
     <table class="w-full border-collapse  text-left bg-white">
         <thead class="font-bold rounded-md bg-gradient-to-br from-teal-500 to-sky-400  text-white">
             <tr >
-                <th class="px-4 py-3 ">No.</th>
+                <th class="px-4 py-3">
+                    <a href="{{ route('admin.produks.index', array_merge(request()->query(), ['sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-200">
+                        No. @if($sortBy == 'id')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-200"></i>@endif
+                    </a>
+                </th>
                 <th class="px-4 py-3 text-center">Code</th>
-                <th class="px-4 py-3 text-center">Nama</th>
+                <th class="px-4 py-3 text-center">
+                    <a href="{{ route('admin.produks.index', array_merge(request()->query(), ['sort_by' => 'nama', 'sort_order' => $sortBy == 'nama' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-200">
+                        Nama @if($sortBy == 'nama')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-200"></i>@endif
+                    </a>
+                </th>
                 <th class="px-4 py-3">Kategori</th>
-                <th class="px-4 py-3">Harga Beli</th>
-                <th class="px-4 py-3">Harga Jual</th>
-                <th class="px-4 py-3">Stok</th>
+                <th class="px-4 py-3">
+                    <a href="{{ route('admin.produks.index', array_merge(request()->query(), ['sort_by' => 'harga_beli', 'sort_order' => $sortBy == 'harga_beli' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-200">
+                        Harga Beli @if($sortBy == 'harga_beli')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-200"></i>@endif
+                    </a>
+                </th>
+                <th class="px-4 py-3">
+                    <a href="{{ route('admin.produks.index', array_merge(request()->query(), ['sort_by' => 'harga_jual', 'sort_order' => $sortBy == 'harga_jual' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-200">
+                        Harga Jual @if($sortBy == 'harga_jual')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-200"></i>@endif
+                    </a>
+                </th>
+                <th class="px-4 py-3">
+                    <a href="{{ route('admin.produks.index', array_merge(request()->query(), ['sort_by' => 'stok', 'sort_order' => $sortBy == 'stok' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-200">
+                        Stok @if($sortBy == 'stok')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-200"></i>@endif
+                    </a>
+                </th>
                 <th class="px-4 py-3 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody id="produkTableBody" class="divide-y divide-gray-200">
             @forelse($produks as $i => $produk)
             <tr class="hover:bg-gray-50 transition " data-id="{{ $produk->id }}">
-                <td class="px-4 py-2 font-medium text-gray-600">{{ $i + $produks->firstItem() }}</td>
+                <td class="px-4 py-2 font-medium text-gray-600">{{ $sortOrder == 'desc' ? $produks->total() - ($produks->firstItem() - 1) - $i : $i + $produks->firstItem() }}</td>
                 <td class="px-4 py-2 font-bold text-center">{{ $produk->kode_produk }}</td>
                 <td class="px-4 py-2 font-semibold text-gray-800 text-center">{{ $produk->nama }}</td>
                 <td class="px-4 py-2">{{ $produk->kategori->nama ?? '-' }}</td>

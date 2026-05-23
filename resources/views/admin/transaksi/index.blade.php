@@ -56,12 +56,18 @@
                         <table class="w-full text-sm">
                             <thead class="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
                                 <tr>
-                                    <th class="p-4 text-md text-center font-semibold">Tanggal</th>
+                                    <th class="p-4 text-md text-center font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="created_at">
+                                        Tanggal <i class="fas fa-sort ml-1"></i>
+                                    </th>
                                     <th class="p-4 text-md text-center font-semibold">Invoice</th>
                                     <th class="p-4 text-md text-center font-semibold">Kasir</th>
                                     <th class="p-4 text-md text-center font-semibold">Pelanggan</th>
-                                    <th class="p-4 text-md text-center font-semibold">Total</th>
-                                    <th class="p-4 text-md text-center font-semibold">Bayar</th>
+                                    <th class="p-4 text-md text-center font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="total">
+                                        Total <i class="fas fa-sort ml-1"></i>
+                                    </th>
+                                    <th class="p-4 text-md text-center font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="bayar">
+                                        Bayar <i class="fas fa-sort ml-1"></i>
+                                    </th>
                                     <th class="p-4 text-md text-center font-semibold">Metode</th>
                                     <th class="p-4 text-md text-center font-semibold">Aksi</th>
                                 </tr>
@@ -72,10 +78,7 @@
                 </div>
 
                 <!-- Pagination -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-2">
-                    <div class="text-sm text-gray-600 mb-2 sm:mb-0">
-                        Menampilkan <span id="page-start">0</span> - <span id="page-end">0</span> dari <span id="total-count">0</span> transaksi
-                    </div>
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-end px-2">
                     <div class="flex items-center space-x-2">
                         <button id="prev-page" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center">
                             <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

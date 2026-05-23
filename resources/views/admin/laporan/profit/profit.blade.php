@@ -105,15 +105,46 @@
                         <table class="w-full text-md">
                             <thead class="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
                                 <tr>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="id">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">No.</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Invoice</th>
                                     <th class="p-4 text-center font-semibold">Tanggal</th>
                                     <th class="p-4 text-center font-semibold">Kasir</th>
                                     <th class="p-4 text-center font-semibold">Produk</th>
-                                    <th class="p-4 text-center font-semibold">Qty</th>
-                                    <th class="p-4 text-center font-semibold">Harga Beli</th>
-                                    <th class="p-4 text-center font-semibold">Harga Jual</th>
-                                    <th class="p-4 text-center font-semibold">Subtotal</th>
-                                    <th class="p-4 text-center font-semibold">Profit</th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="qty">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Qty</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="harga_beli">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Harga Beli</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="harga_jual">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Harga Jual</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="subtotal">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Subtotal</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="profit">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Profit</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="table-body" class="divide-y divide-gray-100"></tbody>

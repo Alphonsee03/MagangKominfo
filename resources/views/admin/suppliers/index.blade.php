@@ -53,7 +53,11 @@
                     <table class="min-w-full">
                         <thead class="bg-teal-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Nama Supplier</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">
+                                    <a href="{{ route('admin.suppliers.index', ['sort_by' => 'nama', 'sort_order' => $sortBy == 'nama' && $sortOrder == 'asc' ? 'desc' : 'asc']) }}" class="hover:text-teal-800">
+                                        Nama Supplier @if($sortBy == 'nama')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-300"></i>@endif
+                                    </a>
+                                </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Telepon</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Alamat</th>
                                 <th class="px-6 py-3 text-right text-xs font-medium text-teal-600 uppercase tracking-wider">Aksi</th>
@@ -99,11 +103,6 @@
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
-                                        <a href="#"
-                                            class="text-teal-600 hover:text-teal-900 bg-teal-50 hover:bg-teal-100 p-2 rounded-lg transition-colors"
-                                            title="Lihat Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
                                     </div>
                                 </td>
                             </tr>

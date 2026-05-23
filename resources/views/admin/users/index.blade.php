@@ -15,7 +15,21 @@
                 </a>
             </div>
 
-            <div class="p-6">
+            <div class="p-6 pt-0">
+                <!-- Search -->
+                <form method="GET" action="{{ route('admin.users.index') }}" class="mb-4">
+                    <div class="relative max-w-md">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Cari nama, username, atau email..."
+                            class="pl-10 w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors">
+                    </div>
+                    <input type="hidden" name="sort_by" value="{{ $sortBy }}">
+                    <input type="hidden" name="sort_order" value="{{ $sortOrder }}">
+                </form>
+
                 <!-- Table Container -->
                 <div class="bg-white rounded-xl shadow-sm overflow-hidden">
                     <!-- Table -->
@@ -23,10 +37,26 @@
                         <table class="min-w-full">
                             <thead class="bg-teal-50">
                                 <tr>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">No.</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">User</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Username</th>
-                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Email</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">
+                                        <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort_by' => 'id', 'sort_order' => $sortBy == 'id' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-800">
+                                            No. @if($sortBy == 'id')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-300"></i>@endif
+                                        </a>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">
+                                        <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort_by' => 'nama', 'sort_order' => $sortBy == 'nama' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-800">
+                                            User @if($sortBy == 'nama')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-300"></i>@endif
+                                        </a>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">
+                                        <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort_by' => 'username', 'sort_order' => $sortBy == 'username' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-800">
+                                            Username @if($sortBy == 'username')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-300"></i>@endif
+                                        </a>
+                                    </th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">
+                                        <a href="{{ route('admin.users.index', array_merge(request()->query(), ['sort_by' => 'email', 'sort_order' => $sortBy == 'email' && $sortOrder == 'asc' ? 'desc' : 'asc'])) }}" class="hover:text-teal-800">
+                                            Email @if($sortBy == 'email')<i class="fas fa-sort-{{ $sortOrder == 'asc' ? 'up' : 'down' }} ml-1"></i>@else<i class="fas fa-sort ml-1 text-teal-300"></i>@endif
+                                        </a>
+                                    </th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-teal-600 uppercase tracking-wider">Role</th>
                                     <th class="px-6 py-3 text-right text-xs font-medium text-teal-600 uppercase tracking-wider">Aksi</th>
                                 </tr>
@@ -35,7 +65,7 @@
                                 @foreach($users as $user)
                                 <tr class="transition-colors hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="text-sm font-medium text-gray-900">{{ $loop->iteration }}</span>
+                                        <span class="text-sm font-medium text-gray-900">{{ $sortOrder == 'desc' ? $users->count() - $loop->index : $loop->iteration }}</span>
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex items-center">
@@ -115,5 +145,16 @@
             transition: color 0.2s ease, background-color 0.2s ease;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.querySelector('input[name="search"]');
+            const form = searchInput?.closest('form');
+            let timeout;
+            searchInput?.addEventListener('input', function() {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => form?.requestSubmit(), 500);
+            });
+        });
+    </script>
     <x-script-admin />
 </x-header-admin>

@@ -96,3 +96,8 @@ Route::middleware('auth:kasir')->prefix('kasir')->name('kasir.')->group(function
 
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware('auth:admin,kasir,supplier')->group(function () {
+    Route::get('/change-password', [App\Http\Controllers\Auth\ChangePasswordController::class, 'index'])->name('change-password.index');
+    Route::post('/change-password', [App\Http\Controllers\Auth\ChangePasswordController::class, 'update'])->name('change-password.update');
+});

@@ -16,6 +16,17 @@ class LaporanProfitController extends Controller
 
     public function data(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortOrder = $request->get('sort_order', 'asc');
+        $allowedSort = ['id', 'qty', 'harga_beli', 'harga_jual', 'subtotal', 'profit'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'id';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc';
+        }
+
         $query = DetailTransaksi::with(['produk', 'transaksi.user']);
 
         if ($request->start_date) {
@@ -28,6 +39,18 @@ class LaporanProfitController extends Controller
             $query->whereHas('transaksi', function ($q) use ($request) {
                 $q->whereDate('created_at', '<=', $request->end_date);
             });
+        }
+
+        if ($sortBy === 'harga_beli') {
+            $query->orderByRaw('(SELECT harga_beli FROM produks WHERE produks.id = detail_transaksis.produk_id) ' . $sortOrder);
+        } elseif ($sortBy === 'subtotal') {
+            $query->orderByRaw('(detail_transaksis.jumlah * detail_transaksis.harga_jual) ' . $sortOrder);
+        } elseif ($sortBy === 'profit') {
+            $query->orderByRaw('(detail_transaksis.jumlah * detail_transaksis.harga_jual - detail_transaksis.jumlah * (SELECT harga_beli FROM produks WHERE produks.id = detail_transaksis.produk_id)) ' . $sortOrder);
+        } elseif ($sortBy === 'qty') {
+            $query->orderBy('detail_transaksis.jumlah', $sortOrder);
+        } else {
+            $query->orderBy('detail_transaksis.id', $sortOrder);
         }
 
         $details = $query->get();

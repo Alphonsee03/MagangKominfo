@@ -169,7 +169,9 @@
                     <div class="space-y-3">
                         <!-- Kode Produk -->
                         <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                            <label class="block text-sm font-medium text-teal-800 mb-1">Kode Produk</label>
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Kode Produk
+                                <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="kode_produk" name="kode_produk"
                                 class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                 required maxlength="100">
@@ -178,7 +180,9 @@
 
                         <!-- Nama Produk -->
                         <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                            <label class="block text-sm font-medium text-teal-800 mb-1">Nama Produk</label>
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Nama Produk
+                                <span class="text-red-500">*</span>
+                            </label>
                             <input type="text" id="nama" name="nama"
                                 class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                 required maxlength="255">
@@ -186,7 +190,9 @@
 
                         <!-- Kategori -->
                         <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                            <label class="block text-sm font-medium text-teal-800 mb-1">Kategori</label>
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Kategori
+                                <span class="text-red-500">*</span>
+                            </label>
                             <select id="kategori_id" name="kategori_id"
                                 class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                 required>
@@ -200,13 +206,17 @@
                         <!-- Harga Beli & Jual -->
                         <div class="grid grid-cols-2 gap-3">
                             <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Beli</label>
+                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Beli
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" id="harga_beli" name="harga_beli"
                                     class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                     required min="0" step="1">
                             </div>
                             <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Jual</label>
+                                <label class="block text-sm font-medium text-teal-800 mb-1">Harga Jual
+                                    <span class="text-red-500">*</span>
+                                </label>
                                 <input type="number" id="harga_jual" name="harga_jual"
                                     class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                     required min="0" step="1">
@@ -215,7 +225,9 @@
 
                         <!-- Stok -->
                         <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                            <label class="block text-sm font-medium text-teal-800 mb-1">Stok</label>
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Stok
+                                <span class="text-red-500">*</span>
+                            </label>
                             <input type="number" id="stok" name="stok"
                                 class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"
                                 required min="0">
@@ -226,7 +238,9 @@
                     <div class="space-y-1">
                         <!-- Supplier -->
                         <div class="bg-white p-4 rounded-lg border border-teal-100 shadow-sm">
-                            <label class="block text-sm font-medium text-teal-800 mb-1">Supplier</label>
+                            <label class="block text-sm font-medium text-teal-800 mb-1">Supplier
+                                <span class="text-red-500">*</span>
+                            </label>
                             <select id="suppliers" name="suppliers[]" multiple
                                 class="w-full border border-teal-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors h-28"
                                 required>

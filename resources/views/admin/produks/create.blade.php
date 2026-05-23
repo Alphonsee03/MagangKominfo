@@ -40,7 +40,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mt-3">
                             <!-- Kode Produk -->
                             <div class="md:col-span-1">
-                                <label class="block text-sm font-medium text-teal-700 mb-2">Kode Produk <span class="text-red-500">*</span></label>
+                                <label class="block text-sm font-medium text-teal-700 mb-2">Kode Produks <span class="text-red-500">*</span></label>
                                 <div class="relative">
                                     <input type="text" name="products[0][kode_produk]"
                                         class="w-full border border-teal-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors"

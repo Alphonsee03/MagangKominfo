@@ -54,14 +54,34 @@
                         <table class="w-full text-sm">
                             <thead class="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
                                 <tr>
-                                    <th class="p-4 text-center font-semibold">No.</th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="id">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">No.</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Tanggal</th>
                                     <th class="p-4 text-center font-semibold">Produk</th>
                                     <th class="p-4 text-center font-semibold">Kode</th>
                                     <th class="p-4 text-center font-semibold">Supplier</th>
-                                    <th class="p-4 text-center font-semibold">Jumlah</th>
-                                    <th class="p-4 text-center font-semibold">Harga Beli</th>
-                                    <th class="p-4 text-center font-semibold">Subtotal</th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="jumlah">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Jumlah</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="harga_beli">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Harga Beli</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="subtotal">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Subtotal</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Keterangan</th>
                                 </tr>
                             </thead>

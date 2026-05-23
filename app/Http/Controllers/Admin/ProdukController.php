@@ -20,7 +20,18 @@ class ProdukController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Produk::with(['kategori', 'suppliers']); // Menggunakan 'suppliers' untuk relasi many-to-many
+        $sortBy = $request->get('sort_by', 'id');
+        $sortOrder = $request->get('sort_order', 'asc');
+        $allowedSort = ['id', 'nama', 'harga_beli', 'harga_jual', 'stok', 'kode_produk', 'created_at'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'id';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc';
+        }
+
+        $query = Produk::with(['kategori', 'suppliers']);
 
         if ($request->search) {
             $query->where('nama', 'like', "%{$request->search}%");
@@ -29,22 +40,21 @@ class ProdukController extends Controller
             $query->where('kategori_id', $request->kategori_id);
         }
         if ($request->supplier_id) {
-            // Menggunakan whereHas untuk memfilter berdasarkan supplier_id
             $query->whereHas('suppliers', function ($query) use ($request) {
                 $query->where('supplier_id', $request->supplier_id);
             });
         }
 
-        $produks = $query->paginate(15);
+        $produks = $query->orderBy($sortBy, $sortOrder)->paginate(15);
 
         if ($request->ajax()) {
-            return view('admin.produks._table', compact('produks'))->render();
+            return view('admin.produks._table', compact('produks', 'sortBy', 'sortOrder'))->render();
         }
 
         $kategoris = Kategori::all();
         $suppliers = Supplier::all();
 
-        return view('admin.produks.index', compact('produks', 'kategoris', 'suppliers'));
+        return view('admin.produks.index', compact('produks', 'kategoris', 'suppliers', 'sortBy', 'sortOrder'));
     }
 
     public function create()

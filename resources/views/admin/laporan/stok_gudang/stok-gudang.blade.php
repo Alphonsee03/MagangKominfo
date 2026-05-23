@@ -50,13 +50,38 @@
                         <table class="w-full text-sm">
                             <thead class="bg-gradient-to-r from-teal-600 to-teal-700 text-white">
                                 <tr>
-                                    <th class="p-4 text-center font-semibold">No.</th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="id">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">No.</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Kode</th>
                                     <th class="p-4 text-center font-semibold">Nama Produk</th>
-                                    <th class="p-4 text-center font-semibold">Stok</th>
-                                    <th class="p-4 text-right font-semibold">Harga Beli</th>
-                                    <th class="p-4 text-right font-semibold">Harga Jual</th>
-                                    <th class="p-4 text-right font-semibold">Nilai Stok</th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="stok">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-center">Stok</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="harga_beli">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-right">Harga Beli</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="harga_jual">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-right">Harga Jual</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 font-semibold cursor-pointer hover:text-teal-200 sortable" data-sort="nilai_stok">
+                                        <div class="flex items-center justify-between w-full gap-2">
+                                            <span class="flex-1 text-right">Nilai Stok</span>
+                                            <i class="fas fa-sort flex-shrink-0"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Supplier</th>
                                 </tr>
                             </thead>

@@ -157,16 +157,6 @@
 
                     </ul>
                 </li>
-                <!-- Settings -->
-                <li class="pc-item mt-6">
-                    <a href="#!" class="pc-link group relative flex items-center px-4 py-3 rounded-xl text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200">
-                        <span class="pc-micon mr-3">
-                            <i class="fas fa-cog text-lg"></i>
-                        </span>
-                        <span class="pc-mtext font-medium">Pengaturan</span>
-                        <div class="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 backdrop-blur-sm"></div>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>

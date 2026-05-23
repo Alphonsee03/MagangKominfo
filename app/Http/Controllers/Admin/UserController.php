@@ -10,10 +10,32 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('admin.users.index', compact('users'));
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $allowedSort = ['id', 'nama', 'username', 'email', 'role', 'created_at'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'desc';
+        }
+
+        $query = User::orderBy($sortBy, $sortOrder);
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('nama', 'like', "%{$search}%")
+                  ->orWhere('username', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $users = $query->get();
+        return view('admin.users.index', compact('users', 'sortBy', 'sortOrder'));
     }
 
 

@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
+    let sortBy = "created_at";
+    let sortOrder = "desc";
     const bodyRiwayat = document.getElementById("riwayat-body");
     const pageInfo = document.getElementById("page-info");
     const modal = document.getElementById("modal-detail");
@@ -7,8 +9,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnPrint = document.getElementById("btn-print");
     let invoiceUrl = null;
 
+    function updateSortIcons() {
+        document.querySelectorAll("#table-riwayat .sortable").forEach((th) => {
+            const icon = th.querySelector("i");
+            if (th.dataset.sort === sortBy) {
+                icon.className = `fas fa-sort-${sortOrder === "asc" ? "up" : "down"} text-xs opacity-80`;
+            } else {
+                icon.className = "fas fa-sort text-xs opacity-60";
+            }
+        });
+    }
+
     async function loadRiwayat(page = 1) {
-        const res = await fetch(`/kasir/transaksi/history/data?page=${page}`);
+        const res = await fetch(`/kasir/transaksi/history/data?page=${page}&sort_by=${sortBy}&sort_order=${sortOrder}`);
         const json = await res.json();
 
         bodyRiwayat.innerHTML = "";
@@ -45,6 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         pageInfo.innerText = `Halaman ${json.pagination.current_page} dari ${json.pagination.last_page}`;
         currentPage = json.pagination.current_page;
+        updateSortIcons();
     }
 
 
@@ -55,6 +69,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById("next-page").addEventListener("click", () => {
         loadRiwayat(currentPage + 1);
+    });
+
+    // sorting
+    document.querySelectorAll("#table-riwayat .sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+            const col = th.dataset.sort;
+            sortOrder = sortBy === col && sortOrder === "asc" ? "desc" : "asc";
+            sortBy = col;
+            loadRiwayat(1);
+        });
     });
 
     // detail transaksi

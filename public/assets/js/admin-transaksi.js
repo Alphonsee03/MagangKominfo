@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
     let lastPage = 1;
+    let sortBy = "created_at";
+    let sortOrder = "desc";
 
     const tbody = document.getElementById("table-body");
     const pageInfo = document.getElementById("page-info");
@@ -28,6 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
         window.open(`/admin/transaksi/export/pdf?${params}`, "_blank");
     });
 
+    function updateSortIcons() {
+        document.querySelectorAll(".sortable").forEach((th) => {
+            const icon = th.querySelector("i");
+            if (th.dataset.sort === sortBy) {
+                icon.className = `fas fa-sort-${sortOrder === "asc" ? "up" : "down"} ml-1`;
+            } else {
+                icon.className = "fas fa-sort ml-1";
+            }
+        });
+    }
+
     async function loadData(page = 1) {
         const start = document.getElementById("start_date").value;
         const end = document.getElementById("end_date").value;
@@ -40,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
             end_date: end,
             metode,
             search,
+            sort_by: sortBy,
+            sort_order: sortOrder,
         });
 
         const res = await fetch(`/admin/transaksi/data?${params}`);
@@ -79,7 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
         pageInfo.innerText = `Halaman ${currentPage} dari ${lastPage}`;
         prevBtn.disabled = currentPage <= 1;
         nextBtn.disabled = currentPage >= lastPage;
+        updateSortIcons();
     }
+
+    // Sorting click handlers
+    document.querySelectorAll(".sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+            const col = th.dataset.sort;
+            sortOrder = sortBy === col && sortOrder === "asc" ? "desc" : "asc";
+            sortBy = col;
+            loadData(1);
+        });
+    });
 
     ["start_date", "end_date", "metode"].forEach((id) => {
         document.getElementById(id).addEventListener("change", () => {

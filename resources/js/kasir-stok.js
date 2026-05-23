@@ -1,10 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
     let currentPage = 1;
+    let sortBy = "nama";
+    let sortOrder = "asc";
     const bodyStok = document.getElementById("stok-body");
     const pageInfo = document.getElementById("page-info");
 
     const searchInput = document.getElementById("search");
     const supplierSelect = document.getElementById("filter-supplier");
+
+    function updateSortIcons() {
+        document.querySelectorAll(".sortable").forEach((th) => {
+            const icon = th.querySelector("i");
+            if (th.dataset.sort === sortBy) {
+                icon.className = `fas fa-sort-${sortOrder === "asc" ? "up" : "down"} text-xs opacity-80`;
+            } else {
+                icon.className = "fas fa-sort text-xs opacity-60";
+            }
+        });
+    }
 
     async function loadData(page = 1) {
         const search = searchInput.value;
@@ -14,6 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
             page,
             search,
             supplier_id,
+            sort_by: sortBy,
+            sort_order: sortOrder,
         });
 
         const res = await fetch(`/kasir/stok/data?${params.toString()}`);
@@ -62,6 +77,8 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("prev-page").disabled = currentPage <= 1;
         document.getElementById("next-page").disabled =
             currentPage >= json.last_page;
+
+        updateSortIcons();
     }
 
     // pagination
@@ -70,6 +87,16 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     document.getElementById("next-page").addEventListener("click", () => {
         loadData(currentPage + 1);
+    });
+
+    // sorting
+    document.querySelectorAll(".sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+            const col = th.dataset.sort;
+            sortOrder = sortBy === col && sortOrder === "asc" ? "desc" : "asc";
+            sortBy = col;
+            loadData(1);
+        });
     });
 
     // search realtime (debounce)

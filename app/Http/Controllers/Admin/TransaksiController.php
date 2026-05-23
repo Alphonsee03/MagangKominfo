@@ -16,8 +16,19 @@ class TransaksiController extends Controller
 
     public function data(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $allowedSort = ['created_at', 'total', 'bayar'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'desc';
+        }
+
         $query = Transaksi::with(['user', 'pelanggan'])
-            ->orderBy('created_at', 'desc');
+            ->orderBy($sortBy, $sortOrder);
 
         // filter tanggal
         if ($request->filled('start_date')) {

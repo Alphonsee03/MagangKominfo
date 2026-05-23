@@ -60,8 +60,18 @@
                                 <tr>
                                     <th class="p-4 text-center font-semibold">Kode Produk</th>
                                     <th class="p-4 text-center font-semibold">Nama</th>
-                                    <th class="p-4 text-center font-semibold">Stok</th>
-                                    <th class="p-4 text-center font-semibold">Harga Jual</th>
+                                    <th class="p-4 text-center font-semibold sortable cursor-pointer select-none" data-sort="stok">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span>Stok</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-4 text-center font-semibold sortable cursor-pointer select-none" data-sort="harga_jual">
+                                        <div class="flex items-center justify-center gap-2">
+                                            <span>Harga Jual</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-4 text-center font-semibold">Supplier</th>
                                 </tr>
                             </thead>

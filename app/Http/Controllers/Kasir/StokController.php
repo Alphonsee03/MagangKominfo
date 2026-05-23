@@ -35,8 +35,15 @@ class StokController extends Controller
             });
         }
 
-        // pagination
-        $produks = $query->orderBy('nama')->paginate(15);
+        $sortBy = $request->get('sort_by', 'nama');
+        $sortOrder = $request->get('sort_order', 'asc');
+        $allowedSort = ['nama', 'stok', 'harga_jual'];
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'nama';
+            $sortOrder = 'asc';
+        }
+
+        $produks = $query->orderBy($sortBy, $sortOrder)->paginate(15);
 
         $produks->getCollection()->transform(function ($produk) {
             return [

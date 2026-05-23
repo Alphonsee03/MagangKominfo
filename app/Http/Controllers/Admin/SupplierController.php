@@ -11,6 +11,17 @@ class SupplierController extends Controller
 
     public function index(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'nama');
+        $sortOrder = $request->get('sort_order', 'asc');
+        $allowedSort = ['nama'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'nama';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc';
+        }
+
         $query = Supplier::query();
 
         // 🔍 Search by nama/telepon/alamat
@@ -20,9 +31,9 @@ class SupplierController extends Controller
                 ->orWhere('alamat', 'like', '%'.$request->search.'%');
         }
 
-        $suppliers = $query->orderBy('nama')->paginate(10);
+        $suppliers = $query->orderBy($sortBy, $sortOrder)->paginate(10);
 
-        return view('admin.suppliers.index', compact('suppliers'));
+        return view('admin.suppliers.index', compact('suppliers', 'sortBy', 'sortOrder'));
     }
 
     /**

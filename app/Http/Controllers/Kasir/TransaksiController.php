@@ -164,7 +164,17 @@ class TransaksiController extends Controller
 
     public function historyData(Request $request)
     {
-        $query = Transaksi::with('user', 'pelanggan', 'details.produk')->latest();
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+
+        $allowedSort = ['created_at', 'total', 'diskon', 'bayar', 'kembali'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+            $sortOrder = 'desc';
+        }
+
+        $query = Transaksi::with('user', 'pelanggan', 'details.produk')->orderBy($sortBy, $sortOrder);
 
         // filter opsional
         if ($request->filled('tanggal')) {

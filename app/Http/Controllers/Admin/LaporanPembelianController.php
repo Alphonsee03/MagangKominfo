@@ -25,6 +25,17 @@ class LaporanPembelianController extends Controller
      */
     public function data(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+        $allowedSort = ['id', 'jumlah', 'harga_beli', 'subtotal', 'created_at'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'created_at';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'desc';
+        }
+
         $query = StokLog::with(['produk', 'produk.suppliers'])
             ->where('tipe', 'masuk'); // hanya stok masuk yg dianggap pembelian
 
@@ -43,18 +54,27 @@ class LaporanPembelianController extends Controller
             });
         }
 
-        $logs = $query->latest()->get();
+        if ($sortBy === 'subtotal') {
+            $query->orderByRaw('(stok_logs.jumlah * (SELECT harga_beli FROM produks WHERE produks.id = stok_logs.produk_id)) ' . $sortOrder);
+        } elseif ($sortBy === 'harga_beli') {
+            $query->orderByRaw('(SELECT harga_beli FROM produks WHERE produks.id = stok_logs.produk_id) ' . $sortOrder);
+        } else {
+            $query->orderBy($sortBy, $sortOrder);
+        }
+
+        $logs = $query->get();
 
         // Mapping data untuk tabel
         $data = $logs->map(function ($log) {
+            $produk = $log->produk;
             return [
                 'tanggal'   => $log->created_at->format('d-m-Y'),
-                'produk'    => $log->produk->nama ?? '-',
-                'kode'      => $log->produk->kode_produk ?? '-',
-                'supplier'  => $log->produk->suppliers->pluck('nama')->join(', '),
+                'produk'    => $produk->nama ?? '-',
+                'kode'      => $produk->kode_produk ?? '-',
+                'supplier'  => $produk?->suppliers?->pluck('nama')?->join(', ') ?? '-',
                 'jumlah'    => $log->jumlah,
-                'harga_beli'=> $log->produk->harga_beli,
-                'subtotal'  => $log->jumlah * $log->produk->harga_beli,
+                'harga_beli'=> $produk->harga_beli ?? 0,
+                'subtotal'  => $log->jumlah * ($produk->harga_beli ?? 0),
                 'keterangan'=> $log->keterangan,
             ];
         });
@@ -87,7 +107,7 @@ class LaporanPembelianController extends Controller
         // Data untuk ringkasan
         $total_item = $logs->sum('jumlah');
         $total_nominal = $logs->sum(function ($log) {
-            return $log->jumlah * $log->produk->harga_beli;
+            return $log->jumlah * ($log->produk->harga_beli ?? 0);
         });
 
         $html = view('admin.laporan.pembelian_stok.pdf', [

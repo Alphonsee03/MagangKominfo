@@ -21,6 +21,11 @@ document.addEventListener("DOMContentLoaded", () => {
         if (supplierSelect.value)
             params.append("supplier_id", supplierSelect.value);
 
+        // Pertahankan sorting dari URL saat ini
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("sort_by")) params.append("sort_by", urlParams.get("sort_by"));
+        if (urlParams.has("sort_order")) params.append("sort_order", urlParams.get("sort_order"));
+
         fetch(`?${params.toString()}`, {
             headers: { "X-Requested-With": "XMLHttpRequest" },
         })

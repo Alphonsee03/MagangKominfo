@@ -2,17 +2,30 @@ document.addEventListener("DOMContentLoaded", () => {
     const tbody = document.getElementById("stok-body");
     const supplierSelect = document.getElementById("supplier_id");
     const btnExport = document.getElementById("btn-export");
+    let sortBy = "id";
+    let sortOrder = "asc";
+
+    function updateSortIcons() {
+        document.querySelectorAll(".sortable").forEach((th) => {
+            const icon = th.querySelector("i");
+            if (th.dataset.sort === sortBy) {
+                icon.className = `fas fa-sort-${sortOrder === "asc" ? "up" : "down"} ml-1`;
+            } else {
+                icon.className = "fas fa-sort ml-1";
+            }
+        });
+    }
 
     async function loadData() {
         const supplier_id = supplierSelect.value;
-        const res = await fetch(`/admin/laporan/stok-gudang/data?supplier_id=${supplier_id}`);
+        const res = await fetch(`/admin/laporan/stok-gudang/data?supplier_id=${supplier_id}&sort_by=${sortBy}&sort_order=${sortOrder}`);
         const data = await res.json();
 
         tbody.innerHTML = "";
         data.forEach((p, i) => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td class="p-4 text-center text-gray-600 font-medium">${i + 1}</td>
+                <td class="p-4 text-center text-gray-600 font-medium">${sortOrder === 'desc' ? data.length - i : i + 1}</td>
                 <td class="p-4 font-mono text-sm text-teal-700 font-semibold">${p.kode_produk}</td>
                 <td class="p-4 text-gray-900 text-center">${p.nama}</td>
                 <td class="p-4 text-center">
@@ -30,7 +43,19 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             tbody.appendChild(row);
         });
+
+        updateSortIcons();
     }
+
+    // Sorting click handlers
+    document.querySelectorAll(".sortable").forEach((th) => {
+        th.addEventListener("click", () => {
+            const col = th.dataset.sort;
+            sortOrder = sortBy === col && sortOrder === "asc" ? "desc" : "asc";
+            sortBy = col;
+            loadData();
+        });
+    });
 
     supplierSelect.addEventListener("change", loadData);
 
@@ -40,5 +65,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     loadData();
-    
 });

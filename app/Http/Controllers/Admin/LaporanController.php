@@ -19,12 +19,29 @@ class LaporanController extends Controller
 
     public function stokGudangData(Request $request)
     {
+        $sortBy = $request->get('sort_by', 'id');
+        $sortOrder = $request->get('sort_order', 'asc');
+        $allowedSort = ['id', 'stok', 'harga_beli', 'harga_jual', 'nilai_stok'];
+
+        if (!in_array($sortBy, $allowedSort)) {
+            $sortBy = 'id';
+        }
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            $sortOrder = 'asc';
+        }
+
         $query = Produk::with('suppliers');
 
         if ($request->supplier_id) {
             $query->whereHas('suppliers', function($q) use ($request) {
                 $q->where('suppliers.id', $request->supplier_id);
             });
+        }
+
+        if ($sortBy === 'nilai_stok') {
+            $query->orderByRaw("(stok * harga_beli) $sortOrder");
+        } else {
+            $query->orderBy($sortBy, $sortOrder);
         }
 
         $produks = $query->get()->map(function ($p) {
@@ -36,7 +53,6 @@ class LaporanController extends Controller
                 'harga_jual'  => $p->harga_jual,
                 'nilai_stok'  => $p->stok * $p->harga_beli,
                 'suppliers'   => $p->suppliers->pluck('nama')->implode(', '),
-                
             ];
         });
 

@@ -43,13 +43,38 @@
                         <table class="w-full text-sm text-left" id="table-riwayat">
                             <thead class="bg-gradient-to-r from-teal-500 to-teal-700 text-white">
                                 <tr>
-                                    <th class="p-3 font-medium text-center">Tanggal</th>
+                                    <th class="p-3 font-medium text-center sortable cursor-pointer select-none" data-sort="created_at">
+                                        <div class="flex items-center justify-between gap-2">
+                                            <span>Tanggal</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-3 font-medium text-center">Invoice</th>
                                     <th class="p-3 font-medium">Pelanggan</th>
-                                    <th class="p-3 font-medium text-right">Total</th>
-                                    <th class="p-3 font-medium text-right">Diskon</th>
-                                    <th class="p-3 font-medium text-right">Bayar</th>
-                                    <th class="p-3 font-medium text-right">Kembali</th>
+                                    <th class="p-3 font-medium text-right sortable cursor-pointer select-none" data-sort="total">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <span>Total</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-3 font-medium text-right sortable cursor-pointer select-none" data-sort="diskon">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <span>Diskon</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-3 font-medium text-right sortable cursor-pointer select-none" data-sort="bayar">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <span>Bayar</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
+                                    <th class="p-3 font-medium text-right sortable cursor-pointer select-none" data-sort="kembali">
+                                        <div class="flex items-center justify-end gap-2">
+                                            <span>Kembali</span>
+                                            <i class="fas fa-sort text-xs opacity-60"></i>
+                                        </div>
+                                    </th>
                                     <th class="p-3 font-medium text-center">Metode</th>
                                     <th class="p-3 font-medium">Kasir</th>
                                     <th class="p-3 font-medium text-center">Aksi</th>
