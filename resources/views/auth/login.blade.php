@@ -152,15 +152,27 @@
                 <div class="absolute -top-16 -right-16 w-32 h-32 rounded-full bg-teal-400 opacity-20 blur-xl"></div>
                 <div class="absolute -bottom-16 -left-16 w-32 h-32 rounded-full bg-purple-400 opacity-20 blur-xl"></div>
 
-                <div class="text-center mb-8 floating-element">
-                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md mb-4">
-                        <i class="fas fa-cash-register text-4xl text-white"></i>
-                    </div>
-                    <h4 class="text-2xl font-bold bg-gradient-to-r from-teal-300 to-sky-400 bg-clip-text text-transparent mb-2">
-                        Cashify POS
-                    </h4>
-                    <p class="text-white/70">Sistem Point of Sale Modern</p>
+                <div class="relative">
+
+                <a href="/"
+                      class="absolute left-0 top-2 w-11 h-11 flex items-center justify-center 
+                      rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 
+                     text-white shadow-lg hover:bg-white/20 transition-all duration-300 z-10">
+                     <i class="fas fa-arrow-left text-sm"></i>
+                </a>
+                <div class="text-center mb-8 floating-element" style="animation: none;">
+                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-white/10 backdrop-blur-md mb-4">
+                     <i class="fas fa-cash-register text-4xl text-white"></i>
                 </div>
+
+        <h4 class="text-2xl font-bold bg-gradient-to-r from-teal-300 to-sky-400 bg-clip-text text-transparent mb-2">
+            Cashify POS
+        </h4>
+
+        <p class="text-white/70">Sistem Point of Sale Modern</p>
+    </div>
+
+</div>
 
                 <h4 class="text-center font-bold text-white text-2xl mb-6">Login</h4>
 
@@ -171,10 +183,44 @@
                         <input type="email" name="email" class="w-full border rounded-xl pl-12 pr-4 py-3.5 bg-white/10 border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40" id="floatingInput" placeholder="Alamat Email" required />
                     </div>
 
-                    <div class="mb-5 relative">
+                   <div class="mb-5 relative">
                         <i class="fas fa-lock absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60 z-10"></i>
-                        <input type="password" name="password" class="w-full border rounded-xl pl-12 pr-4 py-3.5 bg-white/10 border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40" id="floatingInput1" placeholder="Kata Sandi" required />
+
+                        <input 
+                            type="password" 
+                            name="password"
+                            id="password"
+                            class="w-full border rounded-xl pl-12 pr-12 py-3.5 bg-white/10 border-white/20 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-white/40"
+                            placeholder="Kata Sandi" 
+                            required
+                        />
+
+                        <!-- Button Mata -->
+                        <button 
+                            type="button"
+                            onclick="togglePassword()"
+                            class="absolute right-4 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-white"
+                        >
+                            <i id="eyeIcon" class="fas fa-eye"></i>
+                        </button>
                     </div>
+
+                    <script>
+                        function togglePassword() {
+                            const passwordInput = document.getElementById('password');
+                            const eyeIcon = document.getElementById('eyeIcon');
+
+                            if (passwordInput.type === 'password') {
+                                passwordInput.type = 'text';
+                                eyeIcon.classList.remove('fa-eye');
+                                eyeIcon.classList.add('fa-eye-slash');
+                            } else {
+                                passwordInput.type = 'password';
+                                eyeIcon.classList.remove('fa-eye-slash');
+                                eyeIcon.classList.add('fa-eye');
+                            }
+                        }
+                    </script>
 
                     <div class="flex mt-1 justify-between items-center mb-6">
                         <div class="flex items-center">
